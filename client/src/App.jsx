@@ -25,7 +25,7 @@ const App = () => {
   const Fallback = () => <h1>Loading...</h1>
 
   const USER_ROUETS = [
-    { path: "", element: <Login /> },
+    { path: "/", element: <Login /> },
     { path: "register", element: <Register /> },
     { path: "userexam", element: <UserExam /> },
   ]
@@ -41,7 +41,7 @@ const App = () => {
     <ToastContainer />
 
     <Routes>
-      <Route path='/' element={<Layout />}>
+      <Route path='/' element={<><Layout /></>}>
         {
           USER_ROUETS.map((item, index) => <Route
             key={index}

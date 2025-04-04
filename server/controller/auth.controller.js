@@ -5,6 +5,7 @@ const User = require("../models/User")
 const { UserProfile } = require("../utils/uploader")
 const cloud = require("../utils/cloudinary")
 const path = require("path")
+const { OAuth2Client } = require("google-auth-library")
 
 exports.UserRegister = asyncHandler(async (req, res) => {
 
@@ -34,19 +35,47 @@ exports.UserRegister = asyncHandler(async (req, res) => {
     })
 })
 
+
 exports.UserLogin = asyncHandler(async (req, res) => {
-    const { email, password } = req.body
 
-    const result = await User.findOne({ email })
+    const { email, password, credential } = req.body
 
-    if (!result) {
-        return res.status(401).json({ message: "Email Not Registered With Us" })
+    let result
+
+    if (credential) {
+
+        const client = new OAuth2Client({ clientId: process.env.GOOGLE_CLIENT_ID })
+
+        const data = await client.verifyIdToken({ idToken: credential })
+
+        if (!data) {
+            return res.status(401).json({ message: "unable to process" })
+        }
+
+        const { payload } = data
+
+        result = await User.findOne({ email: payload.email })
+
+        if (!result) {
+            useroauth = await User.create({
+                name: payload.name,
+                email: payload.email,
+                picture: payload.picture,
+            })
+        }
     }
+    else {
+        result = await User.findOne({ email })
 
-    const verify = await bcrypt.compare(password, result.password)
+        if (!result) {
+            return res.status(401).json({ message: "Email Not Registered With Us" })
+        }
 
-    if (!verify) {
-        return res.status(401).json({ message: "Invalid Password" })
+        const verify = await bcrypt.compare(password, result.password)
+
+        if (!verify) {
+            return res.status(401).json({ message: "Invalid Password" })
+        }
     }
 
     const token = jwt.sign({ _id: result._id, name: result.name }, process.env.JWT_KEY)
@@ -57,8 +86,10 @@ exports.UserLogin = asyncHandler(async (req, res) => {
         message: "User Login Successfully",
         name: result.name,
         email: result.email,
+        picture: result.picture
     })
 })
+
 
 exports.UserLogout = asyncHandler(async (req, res) => {
     res.clearCookie("USER")

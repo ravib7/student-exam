@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from "formik"
+import { GoogleLogin } from "@react-oauth/google"
 import * as yup from "yup"
 import HandleClasses from '../../admin/components/HandleClasses'
 import { useUserLoginMutation } from '../../redux/api/auth.api'
@@ -88,6 +89,19 @@ const UserLogin = () => {
                 </div>
             </div>
         </div>
+
+
+        <div class="d-flex justify-content-center align-content-center m-3">
+            <GoogleLogin
+                onSuccess={data => {
+                    signin(data)
+                }}
+                onError={err => {
+                    console.log(err)
+                }}
+            />
+        </div>
+
     </>
 }
 

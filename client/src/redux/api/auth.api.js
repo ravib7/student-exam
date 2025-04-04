@@ -5,6 +5,7 @@ export const authApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/auth", credentials: "include" }),
     endpoints: (builder) => {
         return {
+
             userRegister: builder.mutation({
                 query: userData => {
                     return {
