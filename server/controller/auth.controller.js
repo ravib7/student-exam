@@ -95,7 +95,10 @@ exports.UserLogin = asyncHandler(async (req, res) => {
             result = await User.create({
                 name: payload.name,
                 email: payload.email,
-                picture: payload.picture,
+                picture: payload.picture || "",
+                mobile: "",
+                password: null,
+                authType: "google"
             })
         }
     }

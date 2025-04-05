@@ -6,6 +6,5 @@ router
     .post("/user-register", UserRegister)
     .post("/user-login", UserLogin)
     .post("/user-logout", UserLogout)
-// .post("/user-google", UserLoginWithGoogle)
 
 module.exports = router

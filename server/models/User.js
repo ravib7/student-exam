@@ -6,5 +6,6 @@ module.exports = mongoose.model("user", new mongoose.Schema({
     mobile: { type: String, required: false },
     password: { type: String, required: false },
     picture: { type: String, required: true },
-    isActive: { type: Boolean, default: false }
+    isActive: { type: Boolean, default: false },
+    authType: { type: String, enum: ["manual", "google"], default: "manual" }
 }))

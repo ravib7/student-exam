@@ -12,7 +12,6 @@ const UserLogin = () => {
 
     const navigate = useNavigate()
     const [signin, { isSuccess, isLoading, isError, error }] = useUserLoginMutation()
-    // const [google] = useUserGoogleLoginMutation()
 
     const formik = useFormik({
         initialValues: {

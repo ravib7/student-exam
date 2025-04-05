@@ -3,6 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { ToastContainer } from "react-toastify"
 import "react-toastify/ReactToastify.css"
+import UserProtected from './users/components/UserProtected'
 const AdminLayout = lazy(() => import("./admin/components/AdminLayout"))
 const AdminLogin = lazy(() => import("./admin/pages/AdminLogin"))
 const AdminRegister = lazy(() => import("./admin/pages/AdminRegister"))
@@ -27,7 +28,7 @@ const App = () => {
   const USER_ROUETS = [
     { path: "/", element: <Login /> },
     { path: "register", element: <Register /> },
-    { path: "userexam", element: <UserExam /> },
+    { path: "userexam", element: <UserProtected><UserExam /></UserProtected> },
   ]
 
   const ADMIN_ROUETS = [
