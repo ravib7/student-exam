@@ -17,6 +17,20 @@ export const authApi = createApi({
             }),
 
 
+            // UserGoogleLogin: builder.mutation({
+            //     query: userData => {
+            //         return {
+            //             url: "/user-google",
+            //             method: "POST",
+            //             body: userData
+            //         }
+            //     },
+            //     transformResponse: data => {
+            //         localStorage.setItem("user", JSON.stringify(data))
+            //         return data
+            //     }
+            // }),
+
             userLogin: builder.mutation({
                 query: userData => {
                     return {
@@ -49,4 +63,4 @@ export const authApi = createApi({
     }
 })
 
-export const { useUserRegisterMutation, useUserLoginMutation, useUserLogoutMutation } = authApi
+export const { useUserRegisterMutation, useUserLoginMutation, useUserLogoutMutation, useUserGoogleLoginMutation } = authApi

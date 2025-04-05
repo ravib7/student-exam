@@ -35,6 +35,41 @@ exports.UserRegister = asyncHandler(async (req, res) => {
     })
 })
 
+// exports.UserLoginWithGoogle = asyncHandler(async (req, res) => {
+
+//     const { credential } = req.body
+
+//     const client = new OAuth2Client({ clientId: process.env.GOOGLE_CLIENT_ID })
+
+//     const data = await client.verifyIdToken({ idToken: credential })
+
+//     if (!data) {
+//         return res.status(401).json({ message: "unable to process" })
+//     }
+
+//     const { payload } = data
+
+//     const result = await User.findOne({ email: payload.email })
+
+//     if (!result) {
+//         useroauth = await User.create({
+//             name: payload.name,
+//             email: payload.email,
+//             picture: payload.picture,
+//         })
+//     }
+
+//     const token = jwt.sign({ _id: result._id, name: result.name }, process.env.JWT_KEY)
+
+//     res.cookie("USER", token, { maxAge: 1000 * 60 * 60 * 24, httpOnly: true, secure: false })
+
+//     res.json({
+//         message: "User Login Successfully",
+//         name: result.name,
+//         email: result.email,
+//         picture: result.picture
+//     })
+// })
 
 exports.UserLogin = asyncHandler(async (req, res) => {
 
@@ -57,13 +92,14 @@ exports.UserLogin = asyncHandler(async (req, res) => {
         result = await User.findOne({ email: payload.email })
 
         if (!result) {
-            useroauth = await User.create({
+            result = await User.create({
                 name: payload.name,
                 email: payload.email,
                 picture: payload.picture,
             })
         }
     }
+
     else {
         result = await User.findOne({ email })
 
@@ -89,6 +125,7 @@ exports.UserLogin = asyncHandler(async (req, res) => {
         picture: result.picture
     })
 })
+
 
 
 exports.UserLogout = asyncHandler(async (req, res) => {
