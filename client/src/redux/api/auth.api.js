@@ -17,20 +17,6 @@ export const authApi = createApi({
             }),
 
 
-            // UserGoogleLogin: builder.mutation({
-            //     query: userData => {
-            //         return {
-            //             url: "/user-google",
-            //             method: "POST",
-            //             body: userData
-            //         }
-            //     },
-            //     transformResponse: data => {
-            //         localStorage.setItem("user", JSON.stringify(data))
-            //         return data
-            //     }
-            // }),
-
             userLogin: builder.mutation({
                 query: userData => {
                     return {
@@ -59,8 +45,64 @@ export const authApi = createApi({
                 }
             }),
 
+            //     query: adminData => {
+            //         return {
+            //             url: "/admin-register",
+            //             method: "POST",
+            //             body: adminData
+            //         }
+            //     },
+            // }),
+
+
+            // adminSendOTP: builder.mutation({
+            //     query: adminData => {
+            //         return {
+            //             url: "/admin-sendotp",
+            //             method: "POST",
+            //             body: adminData
+            //         }
+            //     },
+            // }),
+
+
+            adminLogin: builder.mutation({
+                query: adminData => {
+                    return {
+                        url: "/admin-login",
+                        method: "POST",
+                        body: adminData
+                    }
+                },
+                transformResponse: data => {
+                    localStorage.setItem("admin", JSON.stringify(data))
+                    return data
+                }
+            }),
+
+
+            adminLogout: builder.mutation({
+                query: adminData => {
+                    return {
+                        url: "/admin-logout",
+                        method: "POST",
+                    }
+                },
+                transformResponse: data => {
+                    localStorage.removeItem("admin")
+                    return data
+                }
+            }),
         }
     }
 })
 
-export const { useUserRegisterMutation, useUserLoginMutation, useUserLogoutMutation, useUserGoogleLoginMutation } = authApi
+export const {
+    useUserRegisterMutation,
+    useUserLoginMutation,
+    useUserLogoutMutation,
+
+
+    useAdminLoginMutation,
+    useAdminLogoutMutation
+} = authApi
