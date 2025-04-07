@@ -10,6 +10,7 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }))
 app.use(cookieParser())
 
 app.use("/api/auth", require("./routes/auth.route"))
+app.use("/api/exam", require("./routes/exam.route"))
 
 app.use("*", (req, res) => {
     res.status(404).json({ message: "Resource Not Found" })

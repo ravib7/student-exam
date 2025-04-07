@@ -50,12 +50,13 @@ const AdminLogin = () => {
                 <div class="col-sm-6 offset-sm-3">
                     <div class="card">
                         <div class="card-header">Login</div>
-                        <form onSubmit={formik.handleSubmit}>
+                        <form onSubmit={formik.handleSubmit} autoComplete='off'>
                             <div class="card-body">
                                 <div>
                                     <label for="email" class="form-label">Enter Email</label>
                                     <input
                                         {...formik.getFieldProps("email")}
+                                        autoComplete='off'
                                         type="text"
                                         class={HandleClasses(formik, "email")}
                                         id="email"
@@ -68,6 +69,7 @@ const AdminLogin = () => {
                                     <label for="password" class="form-label">Enter Password</label>
                                     <input
                                         {...formik.getFieldProps("password")}
+                                        autoComplete='new-password'
                                         type="password"
                                         class={HandleClasses(formik, "password")}
                                         id="password"
