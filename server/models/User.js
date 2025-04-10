@@ -8,4 +8,4 @@ module.exports = mongoose.model("user", new mongoose.Schema({
     picture: { type: String, required: true },
     isActive: { type: Boolean, default: false },
     authType: { type: String, enum: ["manual", "google"], default: "manual" }
-}))
+}, { timestamps: true }))

@@ -23,6 +23,7 @@ const AdminExam = () => {
             secondoption: updateExam ? updateExam.secondoption : "",
             thirdoption: updateExam ? updateExam.thirdoption : "",
             fourthoption: updateExam ? updateExam.fourthoption : "",
+            correctAnswer: updateExam ? updateExam.correctAnswer : "",
         },
         validationSchema: yup.object({
             question: yup.string().required(),
@@ -30,6 +31,7 @@ const AdminExam = () => {
             secondoption: yup.string().required(),
             thirdoption: yup.string().required(),
             fourthoption: yup.string().required(),
+            correctAnswer: yup.string().required(),
         }),
         onSubmit: (values, { resetForm }) => {
             if (updateExam) {
@@ -154,6 +156,20 @@ const AdminExam = () => {
                                     <div class="valid-feedback">Looks good!</div>
                                     <div class="invalid-feedback">{formik.errors.fourthoption}</div>
                                 </div>
+
+
+                                <div>
+                                    <label for="correctAnswer" class="form-label">Enter Correct Answer</label>
+                                    <input
+                                        {...formik.getFieldProps("correctAnswer")}
+                                        type="text"
+                                        class={HandleClasses(formik, "correctAnswer")}
+                                        id="correctAnswer"
+                                        placeholder="Enter Correct Answer"
+                                    />
+                                    <div class="valid-feedback">Looks good!</div>
+                                    <div class="invalid-feedback">{formik.errors.correctAnswer}</div>
+                                </div>
                                 {
                                     updateExam
                                         ? <button type="submit" class="btn btn-warning text-light w-100 mt-3">Update</button>
@@ -169,24 +185,28 @@ const AdminExam = () => {
         <table className="table table-bordered container m-5 text-center">
             <thead>
                 <tr>
+                    <th>No.</th>
                     <th>Question</th>
                     <th>Option 1</th>
                     <th>Option 2</th>
                     <th>Option 3</th>
                     <th>Option 4</th>
+                    <th>Correct Answers</th>
                 </tr>
             </thead>
             <tbody>
                 {
                     data && data.result.map((item, index) => (
                         <tr key={index}>
+                            <td>{index + 1}</td>
                             <td>{item.question}</td>
                             <td>{item.firstoption}</td>
                             <td>{item.secondoption}</td>
                             <td>{item.thirdoption}</td>
                             <td>{item.fourthoption}</td>
+                            <td>{item.correctAnswer}</td>
                             <td>
-                                <button onClick={e => setUpdateExam(item)} type="button" class="btn btn-warning me-3 text-light"><i class="bi bi-pencil-fill"></i></button>
+                                <button onClick={e => setUpdateExam(item)} type="button" class="btn btn-warning mb-3 text-light"><i class="bi bi-pencil-fill"></i></button>
                                 <button onClick={e => examDelete(item._id)} type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
                             </td>
                         </tr>

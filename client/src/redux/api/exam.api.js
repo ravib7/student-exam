@@ -53,4 +53,4 @@ export const examApi = createApi({
     }
 })
 
-export const { useCreateExamMutation, useGetPaperQuery, useDeleteExamMutation, useUpdateExamMutation } = examApi
+export const { useCreateExamMutation, useGetPaperQuery, useLazyGetPaperQuery, useDeleteExamMutation, useUpdateExamMutation } = examApi

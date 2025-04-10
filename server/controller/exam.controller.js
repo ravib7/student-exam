@@ -8,9 +8,9 @@ exports.getExamPaper = asyncHandler(async (req, res) => {
 
 exports.examPaperCreate = asyncHandler(async (req, res) => {
 
-    const { question, firstoption, secondoption, thirdoption, fourthoption } = req.body
+    const { question, firstoption, secondoption, thirdoption, fourthoption, correctAnswer } = req.body
 
-    await Exam.create({ question, firstoption, secondoption, thirdoption, fourthoption })
+    await Exam.create({ question, firstoption, secondoption, thirdoption, fourthoption, correctAnswer })
 
     res.status(201).json({ message: "Exam Create Successfully" })
 })
