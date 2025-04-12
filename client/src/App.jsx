@@ -5,9 +5,9 @@ import { ToastContainer } from "react-toastify"
 import "react-toastify/ReactToastify.css"
 import UserProtected from './users/components/UserProtected'
 import AdminProtected from './admin/components/AdminProtected'
+const AdminHome = lazy(() => import("./admin/pages/AdminHome"))
 const AdminLayout = lazy(() => import("./admin/components/AdminLayout"))
 const AdminLogin = lazy(() => import("./admin/pages/AdminLogin"))
-// const AdminRegister = lazy(() => import("./admin/pages/AdminRegister"))
 const AdminExam = lazy(() => import("./admin/pages/AdminExam"))
 const UserExam = lazy(() => import("./users/pages/UserExam"))
 const Login = lazy(() => import("./users/pages/UserLogin"))
@@ -34,7 +34,7 @@ const App = () => {
 
   const ADMIN_ROUETS = [
     { path: "", element: <AdminLogin /> },
-    // { path: "adminregister", element: <AdminRegister /> },
+    { path: "adminhome", element: <AdminHome /> },
     { path: "adminexam", element: <AdminProtected><AdminExam /></AdminProtected> }
   ]
 

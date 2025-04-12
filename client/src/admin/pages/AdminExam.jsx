@@ -5,10 +5,14 @@ import HandleClasses from '../components/HandleClasses'
 import { useCreateExamMutation, useDeleteExamMutation, useGetPaperQuery, useUpdateExamMutation } from '../../redux/api/exam.api'
 import Loading from '../components/Loading'
 import { toast } from "react-toastify"
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const AdminExam = () => {
 
-    const [updateExam, setUpdateExam] = useState()
+    const navigate = useNavigate()
+
+    const location = useLocation()
+    const updateData = location.state
 
     const [examCreate, { isSuccess, isLoading, isError, error }] = useCreateExamMutation()
     const { data } = useGetPaperQuery()
@@ -18,12 +22,12 @@ const AdminExam = () => {
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            question: updateExam ? updateExam.question : "",
-            firstoption: updateExam ? updateExam.firstoption : "",
-            secondoption: updateExam ? updateExam.secondoption : "",
-            thirdoption: updateExam ? updateExam.thirdoption : "",
-            fourthoption: updateExam ? updateExam.fourthoption : "",
-            correctAnswer: updateExam ? updateExam.correctAnswer : "",
+            question: updateData ? updateData.question : "",
+            firstoption: updateData ? updateData.firstoption : "",
+            secondoption: updateData ? updateData.secondoption : "",
+            thirdoption: updateData ? updateData.thirdoption : "",
+            fourthoption: updateData ? updateData.fourthoption : "",
+            correctAnswer: updateData ? updateData.correctAnswer : "",
         },
         validationSchema: yup.object({
             question: yup.string().required(),
@@ -34,9 +38,8 @@ const AdminExam = () => {
             correctAnswer: yup.string().required(),
         }),
         onSubmit: (values, { resetForm }) => {
-            if (updateExam) {
-                examUpdate({ ...values, _id: updateExam._id })
-                setUpdateExam(null)
+            if (updateData) {
+                examUpdate({ ...values, _id: updateData._id })
             } else {
                 examCreate(values)
             }
@@ -47,20 +50,17 @@ const AdminExam = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success("Exam Create Successfully")
+            navigate("/admin/adminhome")
         }
     }, [isSuccess])
 
     useEffect(() => {
         if (updateIsSuccess) {
             toast.success("Exam Update Successfully")
+            navigate("/admin/adminhome")
         }
     }, [updateIsSuccess])
 
-    useEffect(() => {
-        if (deleteIsSuccess) {
-            toast.error("Exam Delete Successfully")
-        }
-    }, [deleteIsSuccess])
 
     useEffect(() => {
         if (isError) {
@@ -74,18 +74,12 @@ const AdminExam = () => {
         }
     }, [updateIsError])
 
-    useEffect(() => {
-        if (deleteIsError) {
-            toast.error(deleteError.data.message || "unable to Delete")
-        }
-    }, [deleteIsError])
-
-    if (isLoading || updateIsLoading || deleteIsLoading) {
+    if (isLoading || updateIsLoading) {
         return <Loading />
     }
 
     return <>
-        <div class="container">
+        <div class="container mb-5">
             <div class="row">
                 <div class="col-sm-6 offset-sm-3">
                     <div class="card">
@@ -171,7 +165,7 @@ const AdminExam = () => {
                                     <div class="invalid-feedback">{formik.errors.correctAnswer}</div>
                                 </div>
                                 {
-                                    updateExam
+                                    updateData
                                         ? <button type="submit" class="btn btn-warning text-light w-100 mt-3">Update</button>
                                         : <button type="submit" class="btn btn-primary w-100 mt-3">Submit</button>
                                 }
@@ -181,42 +175,6 @@ const AdminExam = () => {
                 </div>
             </div>
         </div>
-
-        <table className="table table-bordered container m-5 text-center">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Question</th>
-                    <th>Option 1</th>
-                    <th>Option 2</th>
-                    <th>Option 3</th>
-                    <th>Option 4</th>
-                    <th>Correct Answers</th>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    data && data.result.map((item, index) => (
-                        <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{item.question}</td>
-                            <td>{item.firstoption}</td>
-                            <td>{item.secondoption}</td>
-                            <td>{item.thirdoption}</td>
-                            <td>{item.fourthoption}</td>
-                            <td>{item.correctAnswer}</td>
-                            <td>
-                                <button onClick={e => setUpdateExam(item)} type="button" class="btn btn-warning mb-3 text-light"><i class="bi bi-pencil-fill"></i></button>
-                                <button onClick={e => examDelete(item._id)} type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
-                            </td>
-                        </tr>
-                    ))
-                }
-            </tbody>
-
-        </table>
-
-
     </>
 }
 

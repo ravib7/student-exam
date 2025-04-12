@@ -13,7 +13,7 @@ const UserExam = () => {
     }, [])
 
     useEffect(() => {
-        console.log(currentQuestionIndex); // ✅ use value, don't call it
+        console.log(currentQuestionIndex);
     }, []);
 
     useEffect(() => {
@@ -40,7 +40,7 @@ const UserExam = () => {
                         <div class="card">
                             {currentQuestion && (
                                 <div className="card-body p-5">
-                                    <h5>{currentQuestionIndex + 1}] {currentQuestion.question}</h5>
+                                    <h5>Q{currentQuestionIndex + 1}. {currentQuestion.question}</h5>
                                     {currentQuestion.options.map((item, i) => (
                                         <div className="form-check" key={i}>
                                             <input

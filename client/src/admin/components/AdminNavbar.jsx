@@ -18,7 +18,7 @@ const AdminNavbar = () => {
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav ms-auto gap-2">
                         <Link to="" class="nav-link active">Login</Link>
-                        {/* <Link to="adminregister" class="nav-link active">Register</Link> */}
+                        <Link to="adminhome" class="nav-link active">Home</Link>
                         <Link to="adminexam" class="nav-link active">Exam</Link>
                     </div>
                 </div>
