@@ -9,8 +9,6 @@ router
     .post("/user-logout", UserLogout)
 
     /* ------------- Admin Router --------------- */
-    // .post("/admin-register", adminRegister)
-    // .post("/admin-sendotp", sendOTP)
     .post("/admin-login", adminLogin)
     .post("/admin-logout", adminLogout)
 

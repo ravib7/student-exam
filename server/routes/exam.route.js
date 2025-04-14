@@ -1,4 +1,4 @@
-const { examPaperCreate, getExamPaper, deleteExamPaper, updateExamPaper } = require("../controller/exam.controller")
+const { examPaperCreate, getExamPaper, deleteExamPaper, updateExamPaper, userExam } = require("../controller/exam.controller")
 
 const router = require("express").Router()
 
@@ -7,5 +7,7 @@ router
     .post("/exam-create", examPaperCreate)
     .patch("/exam-update/:eid", updateExamPaper)
     .delete("/exam-delete/:eid", deleteExamPaper)
+
+    .post("/user-exam", userExam)
 
 module.exports = router

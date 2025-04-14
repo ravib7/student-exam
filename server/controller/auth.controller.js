@@ -64,6 +64,7 @@ exports.UserLogin = asyncHandler(async (req, res) => {
 
         if (!result) {
             result = await User.create({
+                id: payload._id,
                 name: payload.name,
                 email: payload.email,
                 picture: payload.picture || "",
@@ -94,6 +95,7 @@ exports.UserLogin = asyncHandler(async (req, res) => {
 
     res.json({
         message: "User Login Successfully",
+        id: result._id,
         name: result.name,
         email: result.email,
         picture: result.picture

@@ -30,7 +30,7 @@ const AdminLogin = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success("Admin Login Successfully")
-            navigate("adminexam")
+            navigate("adminhome")
         }
     }, [isSuccess])
 
