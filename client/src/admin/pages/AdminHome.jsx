@@ -12,6 +12,7 @@ const AdminHome = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
 
     const currentQuestion = paperData[currentQuestionIndex]
+
     const optionLabels = ['A', 'B', 'C', 'D']
 
     const [fetchPaper, { data }] = useLazyGetPaperQuery()
