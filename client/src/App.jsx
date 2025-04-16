@@ -6,6 +6,7 @@ import "react-toastify/ReactToastify.css"
 import UserProtected from './users/components/UserProtected'
 import AdminProtected from './admin/components/AdminProtected'
 import Success from './users/pages/Sucess'
+import UserResults from './admin/pages/UserResults'
 const AdminHome = lazy(() => import("./admin/pages/AdminHome"))
 const AdminLayout = lazy(() => import("./admin/components/AdminLayout"))
 const AdminLogin = lazy(() => import("./admin/pages/AdminLogin"))
@@ -37,7 +38,8 @@ const App = () => {
   const ADMIN_ROUETS = [
     { path: "", element: <AdminLogin /> },
     { path: "adminhome", element: <AdminHome /> },
-    { path: "adminexam", element: <><AdminExam /></> }
+    { path: "adminexam", element: <><AdminExam /></> },
+    { path: "userResults", element: <><UserResults /></> }
   ]
 
   return <>

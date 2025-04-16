@@ -23,8 +23,8 @@ const AdminHome = () => {
     }, [])
 
     useEffect(() => {
-        console.log(currentQuestionIndex)
-    }, [])
+        setCurrentQuestionIndex(pre => 0)
+    }, [deleteIsSuccess])
 
     useEffect(() => {
         if (data && data.result) {
@@ -67,6 +67,9 @@ const AdminHome = () => {
                             {
                                 currentQuestion && (
                                     <div className="card-body p-4">
+                                        <div className='d-flex justify-content-end'>
+                                            <p><strong>Total Marks : {data.result.length * currentQuestion.marks}</strong></p>
+                                        </div>
                                         <h5>Q{currentQuestionIndex + 1}. {currentQuestion.question}</h5>
                                         {currentQuestion.options.map((item, i) => (
                                             <p><strong>{optionLabels[i]}. </strong> {item}</p>

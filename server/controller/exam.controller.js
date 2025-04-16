@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler")
 const Exam = require("../models/Exam")
 const UserAnswer = require("../models/UserAnswer")
+const User = require("../models/User")
 
 exports.getExamPaper = asyncHandler(async (req, res) => {
     const result = await Exam.find()
@@ -9,9 +10,9 @@ exports.getExamPaper = asyncHandler(async (req, res) => {
 
 exports.examPaperCreate = asyncHandler(async (req, res) => {
 
-    const { question, firstoption, secondoption, thirdoption, fourthoption, correctAnswer } = req.body
+    const { question, firstoption, secondoption, thirdoption, fourthoption, correctAnswer, marks } = req.body
 
-    await Exam.create({ question, firstoption, secondoption, thirdoption, fourthoption, correctAnswer })
+    await Exam.create({ question, firstoption, secondoption, thirdoption, fourthoption, correctAnswer, marks })
 
     res.status(201).json({ message: "Exam Create Successfully" })
 })
@@ -27,22 +28,57 @@ exports.deleteExamPaper = asyncHandler(async (req, res) => {
     res.json({ message: "Paper Delete Successfully" })
 })
 
+exports.getUsersResults = asyncHandler(async (req, res) => {
+
+    const userResult = await UserAnswer.find()
+
+    res.json({ message: "User Result Fetch Successfully", userResult })
+})
+
 
 
 
 /* ------------------- user exam -------------------------- */
 
-exports.userExam = asyncHandler(async (req, res) => {
-    const { answers, userId } = req.body;
+exports.userExamChecking = asyncHandler(async (req, res) => {
 
-    try {
-        const savedAnswer = await UserAnswer.create({
-            userId: userId,
-            answers: answers
-        });
-        res.json({ message: "User Exam Submitted Successfully", result: savedAnswer });
-    } catch (error) {
-        console.error("Error saving answers:", error);
-        res.status(500).json({ message: "Error saving answers", error: error.message });
+    const { answers, userId } = req.body
+
+    const user = await User.findById(userId)
+
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
     }
-});
+
+    const userName = user.name
+    const userImage = user.picture
+
+    const result = []
+
+    for (let data of answers) {
+        const question = await Exam.findById(data.questionId)
+
+        if (question) {
+            const isCorrect = data.selectedOption === question.correctAnswer
+
+            result.push({
+                questionId: data.questionId,
+                question: question.question,
+                selectedOption: data.selectedOption,
+                correctAnswer: question.correctAnswer,
+                isCorrect: isCorrect
+            })
+        }
+    }
+
+    const savedAnswer = await UserAnswer.create({
+        userId: userId,
+        userName: userName,
+        userImage: userImage,
+        answers: result,
+    })
+
+    res.json({ message: "Exam results", result, savedAnswer })
+})
+
+

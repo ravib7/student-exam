@@ -49,16 +49,25 @@ export const examApi = createApi({
                 invalidatesTags: ["exam"]
             }),
 
-
-            userExam: builder.mutation({
+            userExamCheck: builder.mutation({
                 query: examData => {
                     return {
-                        url: "/user-exam",
+                        url: "/user-exam-check",
                         method: "POST",
                         body: examData
                     }
                 },
                 invalidatesTags: ["exam"]
+            }),
+
+            getUsersResults: builder.query({
+                query: () => {
+                    return {
+                        url: "/user-results",
+                        method: "GET",
+                    }
+                },
+                providesTags: ["exam"]
             }),
 
         }
@@ -71,5 +80,6 @@ export const {
     useDeleteExamMutation,
     useUpdateExamMutation,
 
-    useUserExamMutation
+    useUserExamCheckMutation,
+    useGetUsersResultsQuery
 } = examApi

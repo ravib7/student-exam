@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import HandleClasses from '../components/HandleClasses'
-import { useCreateExamMutation, useDeleteExamMutation, useGetPaperQuery, useUpdateExamMutation } from '../../redux/api/exam.api'
+import { useCreateExamMutation, useUpdateExamMutation } from '../../redux/api/exam.api'
 import Loading from '../components/Loading'
 import { toast } from "react-toastify"
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -15,9 +15,7 @@ const AdminExam = () => {
     const updateData = location.state
 
     const [examCreate, { isSuccess, isLoading, isError, error }] = useCreateExamMutation()
-    const { data } = useGetPaperQuery()
     const [examUpdate, { isSuccess: updateIsSuccess, isLoading: updateIsLoading, isError: updateIsError, error: updateError }] = useUpdateExamMutation()
-    const [examDelete, { isSuccess: deleteIsSuccess, isLoading: deleteIsLoading, isError: deleteIsError, error: deleteError }] = useDeleteExamMutation()
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -28,6 +26,7 @@ const AdminExam = () => {
             thirdoption: updateData ? updateData.thirdoption : "",
             fourthoption: updateData ? updateData.fourthoption : "",
             correctAnswer: updateData ? updateData.correctAnswer : "",
+            marks: updateData ? updateData.marks : "",
         },
         validationSchema: yup.object({
             question: yup.string().required(),
@@ -36,6 +35,7 @@ const AdminExam = () => {
             thirdoption: yup.string().required(),
             fourthoption: yup.string().required(),
             correctAnswer: yup.string().required(),
+            marks: yup.string().required(),
         }),
         onSubmit: (values, { resetForm }) => {
             if (updateData) {
@@ -163,6 +163,20 @@ const AdminExam = () => {
                                     />
                                     <div class="valid-feedback">Looks good!</div>
                                     <div class="invalid-feedback">{formik.errors.correctAnswer}</div>
+                                </div>
+
+
+                                <div>
+                                    <label for="marks" class="form-label">Enter Marks</label>
+                                    <input
+                                        {...formik.getFieldProps("marks")}
+                                        type="text"
+                                        class={HandleClasses(formik, "marks")}
+                                        id="marks"
+                                        placeholder="Enter Marks"
+                                    />
+                                    <div class="valid-feedback">Looks good!</div>
+                                    <div class="invalid-feedback">{formik.errors.marks}</div>
                                 </div>
                                 {
                                     updateData

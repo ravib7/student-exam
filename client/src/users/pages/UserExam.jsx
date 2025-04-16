@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLazyGetPaperQuery, useUserExamMutation } from '../../redux/api/exam.api'
+import { useLazyGetPaperQuery, useUserExamCheckMutation } from '../../redux/api/exam.api'
 import { useSelector } from 'react-redux'
 import { toast } from "react-toastify"
 import Loading from '../../admin/components/Loading'
@@ -10,7 +10,7 @@ const UserExam = () => {
     const navigate = useNavigate()
 
     const currentUserId = useSelector(state => state.auth.user.id)
-    const [userExamData, { isSuccess, isLoading, isError, error }] = useUserExamMutation()
+    const [userExamData, { isSuccess, isLoading, isError, error }] = useUserExamCheckMutation()
 
     const [paperData, setPaperData] = useState([])
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
