@@ -28,7 +28,7 @@ const App = () => {
   const location = useLocation()
   const Fallback = () => <h1>Loading...</h1>
 
-  const USER_ROUETS = [
+  const PUBLIC_ROUETS = [
     { path: "/", element: <Login /> },
     { path: "register", element: <Register /> },
     { path: "userexam", element: <UserProtected><UserExam /></UserProtected> },
@@ -36,7 +36,6 @@ const App = () => {
   ]
 
   const ADMIN_ROUETS = [
-    { path: "", element: <AdminLogin /> },
     { path: "adminhome", element: <AdminHome /> },
     { path: "adminexam", element: <><AdminExam /></> },
     { path: "userResults", element: <><UserResults /></> }
@@ -49,7 +48,7 @@ const App = () => {
     <Routes>
       <Route path='/' element={<><Layout /></>}>
         {
-          USER_ROUETS.map((item, index) => <Route
+          PUBLIC_ROUETS.map((item, index) => <Route
             key={index}
             path={item.path}
             element={
@@ -63,12 +62,14 @@ const App = () => {
         }
       </Route>
 
+      <Route path='/admin-login' element={<AdminLogin />} />
 
-      <Route path='/admin' element={<AdminLayout />}>
+      <Route path='/admin' element={<AdminProtected><AdminLayout /></AdminProtected>}>
         {
           ADMIN_ROUETS.map((item, index) => <Route
             key={index}
-            path={item.path}
+            index={index === 0}
+            path={index !== 0 ? item.path : ""}
             element={
               <ErrorBoundary resetKeys={[location.pathname]} FallbackComponent={ErrorFallback}>
                 <Suspense fallback={<Fallback />}>
@@ -79,7 +80,7 @@ const App = () => {
           />)
         }
       </Route>
-    </Routes>
+    </Routes >
   </>
 }
 

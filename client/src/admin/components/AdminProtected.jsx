@@ -7,7 +7,7 @@ const AdminProtected = ({ children }) => {
 
     const { admin } = useSelector(state => state.auth)
 
-    return admin ? children : <Navigate to="/admin" />
+    return admin ? children : <Navigate to="/admin-login" />
 
 }
 

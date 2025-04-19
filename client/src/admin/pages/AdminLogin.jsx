@@ -30,7 +30,7 @@ const AdminLogin = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success("Admin Login Successfully")
-            navigate("adminhome")
+            navigate("/admin")
         }
     }, [isSuccess])
 
@@ -45,11 +45,11 @@ const AdminLogin = () => {
     }
 
     return <>
-        <div class="container">
+        <div class="container m-5">
             <div class="row">
                 <div class="col-sm-6 offset-sm-3">
                     <div class="card">
-                        <div class="card-header">Login</div>
+                        <div class="card-header bg-primary text-light fs-4 text-center">Login</div>
                         <form onSubmit={formik.handleSubmit} autoComplete='off'>
                             <div class="card-body">
                                 <div>

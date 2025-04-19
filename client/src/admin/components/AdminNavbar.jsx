@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from "react-toastify"
 import { useAdminLogoutMutation } from '../../redux/api/auth.api'
+import Loading from './Loading'
 
 const AdminNavbar = () => {
 
     const { admin } = useSelector(state => state.auth)
     const [adminLogout] = useAdminLogoutMutation()
+
 
     return <>
         <nav class="navbar navbar-expand-lg bg-primary navbar-dark mb-5 sticky-top z-50">
@@ -17,8 +20,7 @@ const AdminNavbar = () => {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav ms-auto gap-2">
-                        <Link to="" class="nav-link active">Login</Link>
-                        <Link to="adminhome" class="nav-link active">Home</Link>
+                        <Link to="/admin" class="nav-link active">Home</Link>
                         <Link to="userResults" class="nav-link active">Results</Link>
                         <Link to="adminexam" class="nav-link active">Exam</Link>
                     </div>

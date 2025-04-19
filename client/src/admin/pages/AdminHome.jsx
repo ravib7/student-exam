@@ -16,6 +16,7 @@ const AdminHome = () => {
     const optionLabels = ['A', 'B', 'C', 'D']
 
     const [fetchPaper, { data }] = useLazyGetPaperQuery()
+
     const [examDelete, { isSuccess: deleteIsSuccess, isLoading: deleteIsLoading, isError: deleteIsError, error: deleteError }] = useDeleteExamMutation()
 
 

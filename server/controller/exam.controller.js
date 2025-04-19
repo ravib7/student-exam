@@ -51,6 +51,8 @@ exports.userExamChecking = asyncHandler(async (req, res) => {
     }
 
     const userName = user.name
+    const userEmail = user.email
+    const userMobile = user.mobile
     const userImage = user.picture
 
     const result = []
@@ -66,7 +68,8 @@ exports.userExamChecking = asyncHandler(async (req, res) => {
                 question: question.question,
                 selectedOption: data.selectedOption,
                 correctAnswer: question.correctAnswer,
-                isCorrect: isCorrect
+                isCorrect: isCorrect,
+                marks: question.marks
             })
         }
     }
@@ -74,6 +77,8 @@ exports.userExamChecking = asyncHandler(async (req, res) => {
     const savedAnswer = await UserAnswer.create({
         userId: userId,
         userName: userName,
+        userEmail: userEmail,
+        userMobile: userMobile,
         userImage: userImage,
         answers: result,
     })

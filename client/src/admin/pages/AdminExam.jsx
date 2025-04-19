@@ -57,7 +57,7 @@ const AdminExam = () => {
     useEffect(() => {
         if (updateIsSuccess) {
             toast.success("Exam Update Successfully")
-            navigate("/admin/adminhome")
+            navigate("/admin")
         }
     }, [updateIsSuccess])
 
