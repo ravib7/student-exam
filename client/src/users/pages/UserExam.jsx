@@ -58,13 +58,23 @@ const UserExam = () => {
     }
 
     const handleSubmit = async () => {
+        const allAnswered = paperData.every(q =>
+            answer.find(a => a.questionId === q._id && a.selectedOption)
+        )
+
+        if (!allAnswered) {
+            toast.error("Please answer all questions before submitting.")
+            return
+        }
+
         const paperDataUser = {
             userId: currentUserId,
             answers: answer
-        }
+        };
 
-        await userExamData(paperDataUser)
-    }
+        await userExamData(paperDataUser);
+    };
+
 
     useEffect(() => {
         if (isSuccess) {

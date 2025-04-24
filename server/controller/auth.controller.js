@@ -8,8 +8,6 @@ const path = require("path")
 const { OAuth2Client } = require("google-auth-library")
 const Admin = require("../models/Admin")
 const { json } = require("stream/consumers")
-// const { sendEmail } = require("../utils/email")
-// const { genrateOTP } = require("../utils/genrateOTP")
 
 /* -------------------------------- user login start ---------------------------------- */
 

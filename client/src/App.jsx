@@ -7,6 +7,7 @@ import UserProtected from './users/components/UserProtected'
 import AdminProtected from './admin/components/AdminProtected'
 import Success from './users/pages/Sucess'
 import UserResults from './admin/pages/UserResults'
+import Result from './users/pages/Result'
 const AdminHome = lazy(() => import("./admin/pages/AdminHome"))
 const AdminLayout = lazy(() => import("./admin/components/AdminLayout"))
 const AdminLogin = lazy(() => import("./admin/pages/AdminLogin"))
@@ -32,6 +33,7 @@ const App = () => {
     { path: "/", element: <Login /> },
     { path: "register", element: <Register /> },
     { path: "userexam", element: <UserProtected><UserExam /></UserProtected> },
+    { path: "result", element: <Result /> },
     { path: "usersuccess", element: <Success /> },
   ]
 

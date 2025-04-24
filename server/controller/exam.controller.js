@@ -61,7 +61,8 @@ exports.userExamChecking = asyncHandler(async (req, res) => {
         const question = await Exam.findById(data.questionId)
 
         if (question) {
-            const isCorrect = data.selectedOption === question.correctAnswer
+            // const isCorrect = data.selectedOption === question.correctAnswer
+            const isCorrect = data.selectedOption?.trim().toLowerCase() === question.correctAnswer?.trim().toLowerCase()
 
             result.push({
                 questionId: data.questionId,

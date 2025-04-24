@@ -31,7 +31,7 @@ const UserLogin = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success("User Login Successfully")
-            navigate("/userexam")
+            navigate("userexam")
         }
     }, [isSuccess])
 

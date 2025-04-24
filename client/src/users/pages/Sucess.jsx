@@ -8,13 +8,10 @@ import { useUserLogoutMutation } from '../../redux/api/auth.api'
 
 const Success = () => {
 
-    const [logout] = useUserLogoutMutation()
-
     const navigate = useNavigate()
 
     setTimeout(() => {
-        logout()
-        navigate("/")
+        navigate("/result")
     }, 5000)
 
     useEffect(() => {
@@ -26,6 +23,7 @@ const Success = () => {
     }, [])
 
     return <div className='d-flex justify-content-center flex-column align-items-center'>
+        <h2 className='text-success'>Exam Submitted Successfully</h2>
         <div style={{ height: 400, width: 400 }}>
             <Lottie animationData={successAnimation} loop={true} />
         </div>

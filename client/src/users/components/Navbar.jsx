@@ -1,13 +1,23 @@
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useUserLogoutMutation } from '../../redux/api/auth.api'
+import { toast } from 'react-toastify'
 
 const Navbar = () => {
 
-    const [logout] = useUserLogoutMutation()
+    const navigate = useNavigate()
+
+    const [logout, { isSuccess }] = useUserLogoutMutation()
     const { user } = useSelector(state => state.auth)
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success("User Logout Successfully")
+            navigate("/")
+        }
+    }, [isSuccess])
 
     return <>
         <nav class="navbar navbar-expand-lg bg-primary navbar-dark mb-5 sticky-top z-50">
@@ -20,7 +30,8 @@ const Navbar = () => {
                     <div class="navbar-nav ms-auto gap-2">
                         <Link to="/" class="nav-link active">Login</Link>
                         <Link to="/register" class="nav-link active">Register</Link>
-                        <Link to="/userexam" class="nav-link active">Exam</Link>
+                        {/* <Link to="/userexam" class="nav-link active">Exam</Link> */}
+                        <Link to="/result" class="nav-link active">Result</Link>
                     </div>
                 </div>
                 <div class="dropdown">
