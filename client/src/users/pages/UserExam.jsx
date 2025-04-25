@@ -24,30 +24,31 @@ const UserExam = () => {
     const hasSubmittedRef = useRef(false);
     const [timeLeft, setTimeLeft] = useState('');
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (examTime?.setTime?.[0] && paperData.length > 0) {
-                const end = new Date(examTime.setTime[0].endTime).getTime();
-                const now = new Date().getTime();
-                const diff = end - now;
 
-                if (diff <= 0) {
-                    if (!hasSubmittedRef.current) {
-                        handleSubmit(); // Auto-submit once only
-                    }
-                    clearInterval(interval);
-                    setTimeLeft('Time is up!');
+    useEffect(() => {
+        if (!examTime?.setTime?.[0] || paperData.length === 0) return;
+
+        const interval = setInterval(() => {
+            const end = new Date(examTime.setTime[0].endTime).getTime();
+            const now = new Date().getTime();
+            const diff = end - now;
+
+            if (diff <= 0) {
+                if (!hasSubmittedRef.current) {
+                    handleSubmit();
                 }
-                else {
-                    const mins = Math.floor(diff / 1000 / 60);
-                    const secs = Math.floor((diff / 1000) % 60);
-                    setTimeLeft(`${mins} min ${secs < 10 ? '0' + secs : secs} sec`);
-                }
+                clearInterval(interval);
+                setTimeLeft('Time is up!');
+            } else {
+                const mins = Math.floor(diff / 1000 / 60);
+                const secs = Math.floor((diff / 1000) % 60);
+                setTimeLeft(`${mins} min ${secs < 10 ? '0' + secs : secs} sec`);
             }
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [examTime]);
+    }, [examTime, paperData]);
+
 
 
     useEffect(() => {
