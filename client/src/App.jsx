@@ -8,6 +8,7 @@ import AdminProtected from './admin/components/AdminProtected'
 import Success from './users/pages/Sucess'
 import UserResults from './admin/pages/UserResults'
 import Result from './users/pages/Result'
+import AdminExamTime from './admin/pages/AdminExamTime'
 const AdminHome = lazy(() => import("./admin/pages/AdminHome"))
 const AdminLayout = lazy(() => import("./admin/components/AdminLayout"))
 const AdminLogin = lazy(() => import("./admin/pages/AdminLogin"))
@@ -16,6 +17,7 @@ const UserExam = lazy(() => import("./users/pages/UserExam"))
 const Login = lazy(() => import("./users/pages/UserLogin"))
 const Register = lazy(() => import("./users/pages/UserRegister"))
 const Layout = lazy(() => import("./users/components/Layout"))
+import Practice from "./users/pages/Practice"
 
 const ErrorFallback = ({ error, resetErrorBoundary }) => {
   return <>
@@ -35,12 +37,14 @@ const App = () => {
     { path: "userexam", element: <UserProtected><UserExam /></UserProtected> },
     { path: "result", element: <Result /> },
     { path: "usersuccess", element: <Success /> },
+    { path: "practice", element: <Practice /> },
   ]
 
   const ADMIN_ROUETS = [
     { path: "adminhome", element: <AdminHome /> },
-    { path: "adminexam", element: <><AdminExam /></> },
-    { path: "userResults", element: <><UserResults /></> }
+    { path: "userResults", element: <UserResults /> },
+    { path: "examtime", element: <AdminExamTime /> },
+    { path: "adminexam", element: <AdminExam /> },
   ]
 
   return <>

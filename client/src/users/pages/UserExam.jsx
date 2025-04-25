@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useLazyGetPaperQuery, useUserExamCheckMutation } from '../../redux/api/exam.api'
+import { useGetExamTimeQuery, useLazyGetPaperQuery, useUserExamCheckMutation } from '../../redux/api/exam.api'
 import { useSelector } from 'react-redux'
 import { toast } from "react-toastify"
 import Loading from '../../admin/components/Loading'
 import { useNavigate } from 'react-router-dom'
+import { useRef } from 'react'
 
 const UserExam = () => {
 
@@ -16,7 +17,37 @@ const UserExam = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
     const [answer, setAnswer] = useState([])
     const [fetchPaper, { data }] = useLazyGetPaperQuery()
+    const { data: examTime } = useGetExamTimeQuery()
     const currentQuestion = paperData[currentQuestionIndex]
+
+    const answerRef = useRef([]);
+    const hasSubmittedRef = useRef(false);
+    const [timeLeft, setTimeLeft] = useState('');
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (examTime?.setTime?.[0] && paperData.length > 0) {
+                const end = new Date(examTime.setTime[0].endTime).getTime();
+                const now = new Date().getTime();
+                const diff = end - now;
+
+                if (diff <= 0) {
+                    if (!hasSubmittedRef.current) {
+                        handleSubmit(); // Auto-submit once only
+                    }
+                    clearInterval(interval);
+                    setTimeLeft('Time is up!');
+                }
+                else {
+                    const mins = Math.floor(diff / 1000 / 60);
+                    const secs = Math.floor((diff / 1000) % 60);
+                    setTimeLeft(`${mins} min ${secs < 10 ? '0' + secs : secs} sec`);
+                }
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [examTime]);
 
 
     useEffect(() => {
@@ -53,26 +84,23 @@ const UserExam = () => {
 
         setAnswer(previous => {
             const updated = previous.filter(a => a.questionId !== currentQuestion._id)
-            return [...updated, answer]
+            const final = [...updated, answer]
+            answerRef.current = final;
+            return final;
         })
     }
 
-    const handleSubmit = async () => {
-        const allAnswered = paperData.every(q =>
-            answer.find(a => a.questionId === q._id && a.selectedOption)
-        )
 
-        if (!allAnswered) {
-            toast.error("Please answer all questions before submitting.")
-            return
-        }
+    const handleSubmit = async () => {
+        if (hasSubmittedRef.current) return; // prevent double submit
 
         const paperDataUser = {
             userId: currentUserId,
-            answers: answer
+            answers: answerRef.current // may include unanswered questions, that's fine
         };
 
         await userExamData(paperDataUser);
+        hasSubmittedRef.current = true; // mark as submitted
     };
 
 
@@ -92,12 +120,13 @@ const UserExam = () => {
         return <Loading />
     }
 
-
-
     return <>
         <div className="container">
             <div class="card">
-                <div class="card-header bg-primary text-light fs-4 text-center">Exam Paper</div>
+                <div className="card-header bg-primary text-light fs-4 text-center">
+                    Exam Paper
+                    <h5 className="text-center text-light">⏳ Time Left: {timeLeft}</h5>
+                </div>
                 <div class="card-body">
                     <div className="container">
                         <div class="card">

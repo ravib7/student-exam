@@ -1,15 +1,15 @@
-const { UserRegister, UserLogin, UserLogout, UserLoginWithGoogle, adminRegister, adminLogin, sendOTP, adminLogout } = require("../controller/auth.controller")
+const auth = require("../controller/auth.controller")
 
 const router = require("express").Router()
 
 router
     /* ------------- User Router --------------- */
-    .post("/user-register", UserRegister)
-    .post("/user-login", UserLogin)
-    .post("/user-logout", UserLogout)
+    .post("/user-register", auth.UserRegister)
+    .post("/user-login", auth.UserLogin)
+    .post("/user-logout", auth.UserLogout)
 
     /* ------------- Admin Router --------------- */
-    .post("/admin-login", adminLogin)
-    .post("/admin-logout", adminLogout)
+    .post("/admin-login", auth.adminLogin)
+    .post("/admin-logout", auth.adminLogout)
 
 module.exports = router

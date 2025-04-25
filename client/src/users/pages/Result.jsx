@@ -11,9 +11,6 @@ const Result = () => {
 
     const loggedInUserId = user?.id
 
-    console.log(loggedInUserId)
-
-
     const filteredResult = data?.userResult.filter(item => item.userId === loggedInUserId)
 
     if (!filteredResult || filteredResult.length === 0) {

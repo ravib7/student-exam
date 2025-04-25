@@ -70,6 +70,27 @@ export const examApi = createApi({
                 providesTags: ["exam"]
             }),
 
+            examTimeSet: builder.mutation({
+                query: examTime => {
+                    return {
+                        url: "/exam-time",
+                        method: "POST",
+                        body: examTime
+                    }
+                },
+                invalidatesTags: ["exam"]
+            }),
+
+            getExamTime: builder.query({
+                query: () => {
+                    return {
+                        url: "/get-exam-time",
+                        method: "GET",
+                    }
+                },
+                providesTags: ["exam"]
+            }),
+
         }
     }
 })
@@ -81,5 +102,7 @@ export const {
     useUpdateExamMutation,
 
     useUserExamCheckMutation,
-    useGetUsersResultsQuery
+    useExamTimeSetMutation,
+    useGetUsersResultsQuery,
+    useGetExamTimeQuery
 } = examApi

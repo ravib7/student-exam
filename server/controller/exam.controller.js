@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler")
 const Exam = require("../models/Exam")
 const UserAnswer = require("../models/UserAnswer")
 const User = require("../models/User")
+const Time = require("../models/Time")
 
 exports.getExamPaper = asyncHandler(async (req, res) => {
     const result = await Exam.find()
@@ -35,6 +36,29 @@ exports.getUsersResults = asyncHandler(async (req, res) => {
     res.json({ message: "User Result Fetch Successfully", userResult })
 })
 
+exports.createExamTime = asyncHandler(async (req, res) => {
+
+    const { startTime, endTime, examDate } = req.body
+
+    if (!startTime || !endTime || !examDate) {
+        res.status(400)
+        throw new Error("Please provide startTime, endTime, and examDate");
+    }
+
+    const examTime = await Time.create({ startTime, endTime, examDate })
+
+    res.json({ message: "Exam Time Set Successfully", examTime })
+})
+
+exports.getExamTime = asyncHandler(async (req, res) => {
+
+    const setTime = await Time.find()
+
+    res.json({ message: "User Result Fetch Successfully", setTime })
+})
+
+
+
 
 
 
@@ -61,7 +85,6 @@ exports.userExamChecking = asyncHandler(async (req, res) => {
         const question = await Exam.findById(data.questionId)
 
         if (question) {
-            // const isCorrect = data.selectedOption === question.correctAnswer
             const isCorrect = data.selectedOption?.trim().toLowerCase() === question.correctAnswer?.trim().toLowerCase()
 
             result.push({

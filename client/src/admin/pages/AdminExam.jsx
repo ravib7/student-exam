@@ -35,7 +35,6 @@ const AdminExam = () => {
             thirdoption: yup.string().required(),
             fourthoption: yup.string().required(),
             correctAnswer: yup.string().required(),
-            marks: yup.string().required(),
         }),
         onSubmit: (values, { resetForm }) => {
             if (updateData) {
@@ -178,6 +177,7 @@ const AdminExam = () => {
                                     <div class="valid-feedback">Looks good!</div>
                                     <div class="invalid-feedback">{formik.errors.marks}</div>
                                 </div>
+
                                 {
                                     updateData
                                         ? <button type="submit" class="btn btn-warning text-light w-100 mt-3">Update</button>

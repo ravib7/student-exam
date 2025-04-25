@@ -3,7 +3,6 @@ import Lottie from "lottie-react"
 import successAnimation from '../assets/success.json'
 import successMusic from '../assets/success.mp3'
 import { useNavigate } from 'react-router-dom'
-import { useUserLogoutMutation } from '../../redux/api/auth.api'
 
 
 const Success = () => {
