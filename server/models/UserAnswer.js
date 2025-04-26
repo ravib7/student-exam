@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const answerSchema = new mongoose.Schema({
     questionId: { type: mongoose.Schema.Types.ObjectId, ref: "exam", required: true },
     question: { type: String, required: true },
-    selectedOption: { type: String, required: true },
+    selectedOption: { type: String, required: false, default: "Not Attempted" },
     correctAnswer: { type: String },
     isCorrect: { type: Boolean, default: false },
     marks: { type: Number, required: false },

@@ -8,6 +8,7 @@ const path = require("path")
 const { OAuth2Client } = require("google-auth-library")
 const Admin = require("../models/Admin")
 const { json } = require("stream/consumers")
+const Time = require("../models/Time")
 
 /* -------------------------------- user login start ---------------------------------- */
 
@@ -43,6 +44,25 @@ exports.UserRegister = asyncHandler(async (req, res) => {
 exports.UserLogin = asyncHandler(async (req, res) => {
 
     const { email, password, credential } = req.body
+
+
+    const examData = await Time.findOne().sort({ createdAt: -1 });
+
+    if (!examData || !examData.startTime) {
+        return res.status(500).json({ message: "Exam time not set by admin" });
+    }
+
+    const currentTime = new Date().getTime();
+    const startTime = new Date(examData.startTime).getTime();
+
+    if (currentTime < startTime) {
+        const formattedDate = new Date(examData.examDate).toLocaleDateString();
+        const formattedTime = new Date(examData.startTime).toLocaleTimeString();
+        return res.status(401).json({
+            message: `⏳ Exam starts on ${formattedDate} at ${formattedTime}`,
+        });
+    }
+
 
     let result
 

@@ -126,13 +126,16 @@ const UserExam = () => {
             <div class="card">
                 <div className="card-header bg-primary text-light fs-4 text-center">
                     Exam Paper
-                    <h5 className="text-center text-light">⏳ Time Left: {timeLeft}</h5>
+                    <h5 className="text-center text-light mt-3">⏳ Time Left: {timeLeft}</h5>
                 </div>
                 <div class="card-body">
                     <div className="container">
                         <div class="card">
                             {currentQuestion && (
                                 <div className="card-body p-5">
+                                    <div className='d-flex justify-content-end'>
+                                        <p><strong>Total Marks : {data.result.length * currentQuestion.marks}</strong></p>
+                                    </div>
                                     <h5>Q{currentQuestionIndex + 1}. {currentQuestion.question}</h5>
                                     {currentQuestion.options.map((item, i) => (
 
