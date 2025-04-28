@@ -93,16 +93,27 @@ const UserExam = () => {
 
 
     const handleSubmit = async () => {
-        if (hasSubmittedRef.current) return; // prevent double submit
+        if (hasSubmittedRef.current) return;
+
+        const finalAnswers = paperData.map(question => {
+            const existingAnswer = answerRef.current.find(ans => ans.questionId === question._id);
+            return {
+                userId: currentUserId,
+                questionId: question._id,
+                question: question.question,
+                selectedOption: existingAnswer?.selectedOption || ""
+            };
+        });
 
         const paperDataUser = {
             userId: currentUserId,
-            answers: answerRef.current // may include unanswered questions, that's fine
+            answers: finalAnswers
         };
 
         await userExamData(paperDataUser);
-        hasSubmittedRef.current = true; // mark as submitted
+        hasSubmittedRef.current = true;
     };
+
 
 
     useEffect(() => {
@@ -162,7 +173,7 @@ const UserExam = () => {
                             </div>
                         </div>
                         <div className='text-center'>
-                            <button onClick={handleSubmit} type="submit" class="btn btn-primary w-50  mt-3">Submit</button>
+                            <button disabled={hasSubmittedRef.current} onClick={handleSubmit} type="submit" class="btn btn-primary w-50  mt-3">Submit</button>
                         </div>
                     </div>
                 </div>
