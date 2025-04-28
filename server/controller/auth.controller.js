@@ -48,13 +48,15 @@ exports.UserLogin = asyncHandler(async (req, res) => {
 
     const examData = await Time.findOne().sort({ createdAt: -1 });
 
-    if (!examData || !examData.startTime) {
+    if (!examData || !examData.startTime || !examData.endTime) {
         return res.status(500).json({ message: "Exam time not set by admin" });
     }
 
     const currentTime = new Date().getTime();
     const startTime = new Date(examData.startTime).getTime();
+    const endTime = new Date(examData.endTime).getTime();
 
+    // Before exam starts
     if (currentTime < startTime) {
         const formattedDate = new Date(examData.examDate).toLocaleDateString();
         const formattedTime = new Date(examData.startTime).toLocaleTimeString();
@@ -63,6 +65,14 @@ exports.UserLogin = asyncHandler(async (req, res) => {
         });
     }
 
+    // After exam ends
+    if (currentTime > endTime) {
+        return res.status(401).json({
+            message: `⏰ Exam time is over! You can't login now.`,
+        });
+    }
+
+    // If exam is ongoing ➔ allow login
 
     let result
 

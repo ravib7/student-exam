@@ -34,7 +34,7 @@ const App = () => {
     { path: "/", element: <Login /> },
     { path: "register", element: <Register /> },
     { path: "userexam", element: <UserProtected><UserExam /></UserProtected> },
-    { path: "result", element: <Result /> },
+    { path: "result", element: <UserProtected><Result /></UserProtected > },
     { path: "usersuccess", element: <Success /> },
   ]
 

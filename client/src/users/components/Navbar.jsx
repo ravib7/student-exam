@@ -30,7 +30,7 @@ const Navbar = () => {
                     <div class="navbar-nav ms-auto gap-2">
                         <Link to="/" class="nav-link active">Login</Link>
                         <Link to="/register" class="nav-link active">Register</Link>
-                        <Link to="/userexam" class="nav-link active">Exam</Link>
+                        {/* <Link to="/userexam" class="nav-link active">Exam</Link> */}
                         <Link to="/result" class="nav-link active">Result</Link>
                     </div>
                 </div>

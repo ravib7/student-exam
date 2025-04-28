@@ -28,18 +28,35 @@ const UserExam = () => {
     useEffect(() => {
         if (!examTime?.setTime?.[0] || paperData.length === 0) return;
 
-        const interval = setInterval(() => {
-            const end = new Date(examTime.setTime[0].endTime).getTime();
-            const now = new Date().getTime();
-            const diff = end - now;
+        const start = new Date(examTime.setTime[0].startTime).getTime();
+        const end = new Date(examTime.setTime[0].endTime).getTime();
+        const now = new Date().getTime();
 
-            if (diff <= 0) {
+        if (now < start) {
+            setTimeLeft('Exam has not started yet!');
+            navigate("/"); // 👈 Send back to home
+            return;
+        }
+
+        if (now > end) {
+            setTimeLeft('Exam time is over!');
+            navigate("/"); // 👈 Send back to home
+            return;
+        }
+
+        // start timer
+        const interval = setInterval(() => {
+            const now = new Date().getTime();
+
+            if (now > end) {
                 if (!hasSubmittedRef.current) {
                     handleSubmit();
+                    hasSubmittedRef.current = true;
                 }
                 clearInterval(interval);
                 setTimeLeft('Time is up!');
             } else {
+                const diff = end - now;
                 const mins = Math.floor(diff / 1000 / 60);
                 const secs = Math.floor((diff / 1000) % 60);
                 setTimeLeft(`${mins} min ${secs < 10 ? '0' + secs : secs} sec`);
@@ -48,6 +65,9 @@ const UserExam = () => {
 
         return () => clearInterval(interval);
     }, [examTime, paperData]);
+
+
+
 
 
 
@@ -101,7 +121,7 @@ const UserExam = () => {
                 userId: currentUserId,
                 questionId: question._id,
                 question: question.question,
-                selectedOption: existingAnswer?.selectedOption || ""
+                selectedOption: existingAnswer?.selectedOption || "Not Attempted"
             };
         });
 
