@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
-export const examApi = createApi({
-    reducerPath: "api",
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/exam", credentials: "include" }),
-    tagTypes: ["exam"],
+export const adminApi = createApi({
+    reducerPath: "adminApi",
+    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/admin", credentials: "include" }),
+    tagTypes: ["admin"],
     endpoints: (builder) => {
         return {
+
             getPaper: builder.query({
                 query: () => {
                     return {
@@ -13,7 +14,7 @@ export const examApi = createApi({
                         method: "GET"
                     }
                 },
-                providesTags: ["exam"]
+                providesTags: ["admin"]
             }),
 
             createExam: builder.mutation({
@@ -24,7 +25,7 @@ export const examApi = createApi({
                         body: examData
                     }
                 },
-                invalidatesTags: ["exam"]
+                invalidatesTags: ["admin"]
             }),
 
             updateExam: builder.mutation({
@@ -35,7 +36,7 @@ export const examApi = createApi({
                         body: examData
                     }
                 },
-                invalidatesTags: ["exam"]
+                invalidatesTags: ["admin"]
             }),
 
 
@@ -46,28 +47,17 @@ export const examApi = createApi({
                         method: "DELETE",
                     }
                 },
-                invalidatesTags: ["exam"]
-            }),
-
-            userExamCheck: builder.mutation({
-                query: examData => {
-                    return {
-                        url: "/user-exam-check",
-                        method: "POST",
-                        body: examData
-                    }
-                },
-                invalidatesTags: ["exam"]
+                invalidatesTags: ["admin"]
             }),
 
             getUsersResults: builder.query({
                 query: () => {
                     return {
-                        url: "/user-results",
+                        url: "/get-user-result",
                         method: "GET",
                     }
                 },
-                providesTags: ["exam"]
+                providesTags: ["admin"]
             }),
 
             examTimeSet: builder.mutation({
@@ -78,7 +68,7 @@ export const examApi = createApi({
                         body: examTime
                     }
                 },
-                invalidatesTags: ["exam"]
+                invalidatesTags: ["admin"]
             }),
 
             getExamTime: builder.query({
@@ -88,7 +78,7 @@ export const examApi = createApi({
                         method: "GET",
                     }
                 },
-                providesTags: ["exam"]
+                providesTags: ["admin"]
             }),
 
         }
@@ -101,8 +91,7 @@ export const {
     useDeleteExamMutation,
     useUpdateExamMutation,
 
-    useUserExamCheckMutation,
     useExamTimeSetMutation,
     useGetUsersResultsQuery,
     useGetExamTimeQuery
-} = examApi
+} = adminApi

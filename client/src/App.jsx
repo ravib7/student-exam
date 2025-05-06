@@ -39,7 +39,7 @@ const App = () => {
   ]
 
   const ADMIN_ROUETS = [
-    { path: "adminhome", element: <AdminHome /> },
+    { path: "", element: <AdminHome /> },
     { path: "userResults", element: <UserResults /> },
     { path: "examtime", element: <AdminExamTime /> },
     { path: "adminexam", element: <AdminExam /> },

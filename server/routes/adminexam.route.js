@@ -1,4 +1,4 @@
-const exam = require("../controller/exam.controller")
+const exam = require("../controller/adminexam.controller")
 
 const router = require("express").Router()
 
@@ -8,9 +8,9 @@ router
     .patch("/exam-update/:eid", exam.updateExamPaper)
     .delete("/exam-delete/:eid", exam.deleteExamPaper)
 
-    .post("/user-exam-check", exam.userExamChecking)
-    .get("/user-results", exam.getUsersResults)
+    .get("/get-user-result", exam.getAllResults)
     .post("/exam-time", exam.createExamTime)
-    .get("/get-exam-time", exam.getExamTime)
+
+
 
 module.exports = router

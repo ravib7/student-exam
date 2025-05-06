@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useGetUsersResultsQuery } from '../../redux/api/exam.api'
+import { useGetUsersResultsQuery } from '../../redux/api/admin.api'
 
 const UserResults = () => {
 

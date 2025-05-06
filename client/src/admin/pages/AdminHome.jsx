@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom"
-import { useDeleteExamMutation, useLazyGetPaperQuery } from '../../redux/api/exam.api'
+import { useDeleteExamMutation, useLazyGetPaperQuery } from '../../redux/api/admin.api'
 import Loading from '../components/Loading'
 import { toast } from 'react-toastify'
 

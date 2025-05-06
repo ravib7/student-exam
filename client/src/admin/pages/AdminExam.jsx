@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import HandleClasses from '../components/HandleClasses'
-import { useCreateExamMutation, useUpdateExamMutation } from '../../redux/api/exam.api'
+import { useCreateExamMutation, useUpdateExamMutation } from '../../redux/api/admin.api'
 import Loading from '../components/Loading'
 import { toast } from "react-toastify"
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -49,7 +49,7 @@ const AdminExam = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success("Exam Create Successfully")
-            navigate("/admin/adminhome")
+            // navigate("/admin")
         }
     }, [isSuccess])
 

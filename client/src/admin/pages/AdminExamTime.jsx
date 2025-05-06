@@ -4,8 +4,9 @@ import { useFormik } from 'formik'
 import * as yup from "yup"
 import { toast } from "react-toastify"
 import HandleClasses from '../components/HandleClasses'
-import { useExamTimeSetMutation } from '../../redux/api/exam.api'
+import { useExamTimeSetMutation } from '../../redux/api/admin.api'
 import { useNavigate } from 'react-router-dom'
+import { format, parse } from "date-fns"
 
 const AdminExamTime = () => {
 
@@ -15,43 +16,40 @@ const AdminExamTime = () => {
 
     const formik = useFormik({
         initialValues: {
+            examName: "",
             startTime: "",
             endTime: "",
             examDate: "",
         },
         validationSchema: yup.object({
+            examName: yup.string().required(),
             startTime: yup.string().required(),
             endTime: yup.string().required(),
             examDate: yup.string().required(),
         }),
         onSubmit: (values, { resetForm }) => {
-            const { startDate, endDate } = convertToDate(values.startTime, values.endTime, values.examDate);
+            const startDateTime = parse(
+                `${values.examDate} ${values.startTime}`,
+                'yyyy-MM-dd HH:mm',
+                new Date()
+            );
+
+            const endDateTime = parse(
+                `${values.examDate} ${values.endTime}`,
+                'yyyy-MM-dd HH:mm',
+                new Date()
+            );
 
             setTime({
-                startTime: startDate,
-                endTime: endDate,
-                examDate: new Date(values.examDate).toISOString()
+                examName: values.examName,
+                examDate: values.examDate,
+                startTime: startDateTime,
+                endTime: endDateTime,
             });
 
-            resetForm()
+            resetForm();
         }
     })
-
-    const convertToDate = (startTimeString, endTimeString, dateString) => {
-        const [startHours, startMinutes] = startTimeString.split(':');
-        const [endHours, endMinutes] = endTimeString.split(':');
-        const [year, month, day] = dateString.split('-');
-
-
-        const startDate = new Date(year, month - 1, day, startHours, startMinutes)
-        const endDate = new Date(year, month - 1, day, endHours, endMinutes)
-
-        return {
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString()
-        };
-    };
-
 
 
     useEffect(() => {
@@ -79,6 +77,18 @@ const AdminExamTime = () => {
                         <div class="card-header bg-primary text-light fs-4 text-center">Exam Time Form</div>
                         <form onSubmit={formik.handleSubmit}>
                             <div class="card-body">
+                                <div class="mt-2">
+                                    <label for="examName" class="form-label">Enter Exam Name</label>
+                                    <input
+                                        {...formik.getFieldProps("examName")}
+                                        type="text"
+                                        class={HandleClasses(formik, "examName")}
+                                        id="examName"
+                                        placeholder="Enter Exam Name"
+                                    />
+                                    <div class="valid-feedback">Looks good!</div>
+                                    <div class="invalid-feedback">{formik.errors.examName}</div>
+                                </div>
                                 <div class="mt-2">
                                     <label for="startTime" class="form-label">Enter Start Time</label>
                                     <input

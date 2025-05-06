@@ -2,6 +2,7 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
 const cookieParser = require("cookie-parser")
+const { userProtected, adminProtcted } = require("./middleware/auth.middleware")
 require("dotenv").config()
 
 const app = express()
@@ -10,7 +11,8 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }))
 app.use(cookieParser())
 
 app.use("/api/auth", require("./routes/auth.route"))
-app.use("/api/exam", require("./routes/exam.route"))
+app.use("/api/admin", adminProtcted, require("./routes/adminexam.route"))
+app.use("/api/user", userProtected, require("./routes/adminexam.route"))
 
 app.use("*", (req, res) => {
     res.status(404).json({ message: "Resource Not Found" })

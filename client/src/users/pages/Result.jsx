@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
-import { useGetUsersResultsQuery } from '../../redux/api/exam.api'
+import { useGetUsersResultsQuery } from '../../redux/api/admin.api'
 import { useSelector } from 'react-redux'
 
 const Result = () => {
-    const [currentIndex, setCurrentIndex] = useState(0)
+    // const [currentIndex, setCurrentIndex] = useState(0)
 
     const { data } = useGetUsersResultsQuery()
 
-    const { user } = useSelector(state => state.auth)
+    // const { user } = useSelector(state => state.auth)
 
-    const loggedInUserId = user?.id
+    // const loggedInUserId = user?.id
 
-    const filteredResult = data?.userResult.filter(item => item.userId === loggedInUserId)
+    // const filteredResult = data?.userResult.filter(item => item.userId === loggedInUserId)
 
-    if (!filteredResult || filteredResult.length === 0) {
-        return <p className="text-center mt-5">Loading or no results found.</p>
-    }
+    // if (!filteredResult || filteredResult.length === 0) {
+    //     return <p className="text-center mt-5">Loading or no results found.</p>
+    // }
 
-    const item = filteredResult[currentIndex]
+    const item = data[currentIndex]
 
     const obtainedMarks = item.answers
         .filter(ans => ans.isCorrect)
