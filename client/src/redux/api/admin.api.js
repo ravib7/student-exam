@@ -8,9 +8,20 @@ export const adminApi = createApi({
         return {
 
             getPaper: builder.query({
-                query: () => {
+                query: examId => {
                     return {
                         url: "/exam-fetch",
+                        method: "GET",
+                        params: { examId }
+                    }
+                },
+                providesTags: ["admin"]
+            }),
+
+            getPaperName: builder.query({
+                query: () => {
+                    return {
+                        url: "/exam-name",
                         method: "GET"
                     }
                 },
@@ -22,7 +33,7 @@ export const adminApi = createApi({
                     return {
                         url: "/exam-create",
                         method: "POST",
-                        body: examData
+                        body: examData,
                     }
                 },
                 invalidatesTags: ["admin"]
@@ -87,6 +98,7 @@ export const adminApi = createApi({
 
 export const {
     useCreateExamMutation,
+    useGetPaperNameQuery,
     useLazyGetPaperQuery,
     useDeleteExamMutation,
     useUpdateExamMutation,

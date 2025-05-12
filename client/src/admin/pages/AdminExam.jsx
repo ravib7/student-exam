@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import HandleClasses from '../components/HandleClasses'
-import { useCreateExamMutation, useUpdateExamMutation } from '../../redux/api/admin.api'
+import { useCreateExamMutation, useGetPaperNameQuery, useUpdateExamMutation } from '../../redux/api/admin.api'
 import Loading from '../components/Loading'
 import { toast } from "react-toastify"
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const AdminExam = () => {
 
@@ -14,8 +14,11 @@ const AdminExam = () => {
     const location = useLocation()
     const updateData = location.state
 
+    const [examId, setExamId] = useState(null)
+
     const [examCreate, { isSuccess, isLoading, isError, error }] = useCreateExamMutation()
     const [examUpdate, { isSuccess: updateIsSuccess, isLoading: updateIsLoading, isError: updateIsError, error: updateError }] = useUpdateExamMutation()
+    const { data } = useGetPaperNameQuery()
 
     const formik = useFormik({
         enableReinitialize: true,
@@ -38,9 +41,9 @@ const AdminExam = () => {
         }),
         onSubmit: (values, { resetForm }) => {
             if (updateData) {
-                examUpdate({ ...values, _id: updateData._id })
+                examUpdate({ exam: examId, ...values, _id: updateData._id })
             } else {
-                examCreate(values)
+                examCreate({ exam: examId, ...values })
             }
             resetForm()
         }
@@ -78,6 +81,19 @@ const AdminExam = () => {
     }
 
     return <>
+
+        <select class="form-select mb-5" onChange={e => setExamId(e.target.value)}>
+            <option value="" selected disabled>Select Exam Name</option>
+            {
+                data && data.result.map(item =>
+                    <option
+                        value={item._id}
+                        id={item._id}>
+                        {item.examName}
+                    </option>)
+            }
+        </select>
+
         <div class="container mb-5">
             <div class="row">
                 <div class="col-sm-6 offset-sm-3">

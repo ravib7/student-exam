@@ -5,19 +5,21 @@ const User = require("../models/User")
 const Time = require("../models/Time")
 
 exports.getExamPaper = asyncHandler(async (req, res) => {
-    const result = await Exam.find()
+    const { examId } = req.query
+    const result = await Exam.find({ exam: examId })
+    res.json({ message: "Paper Fetch Successfully", result })
+})
+
+exports.getExamName = asyncHandler(async (req, res) => {
+    const result = await Time.find()
     res.json({ message: "Paper Fetch Successfully", result })
 })
 
 exports.examPaperCreate = asyncHandler(async (req, res) => {
 
-    const { question, firstoption, secondoption, thirdoption, fourthoption, correctAnswer, marks } = req.body
+    const { exam, question, firstoption, secondoption, thirdoption, fourthoption, correctAnswer, marks } = req.body
 
-    const result = []
-
-    result.push({ question, firstoption, secondoption, thirdoption, fourthoption, correctAnswer, marks })
-
-    await Exam.create(result)
+    await Exam.create({ exam, question, firstoption, secondoption, thirdoption, fourthoption, correctAnswer, marks })
 
     res.status(201).json({ message: "Exam Create Successfully" })
 })
