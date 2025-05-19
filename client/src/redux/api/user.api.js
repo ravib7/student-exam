@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 export const userApi = createApi({
     reducerPath: "userApi",
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/user" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/user", credentials: "include" }),
     tagTypes: ["user"],
     endpoints: (builder) => {
         return {
@@ -16,14 +16,25 @@ export const userApi = createApi({
                 providesTags: ["user"]
             }),
 
-            userExam: builder.query({
+            getExamName: builder.query({
                 query: () => {
                     return {
-                        url: "/user-exam-fetch",
+                        url: "/get-exam-name",
                         method: "GET",
                     }
                 },
-                invalidatesTags: ["user"]
+                providesTags: ["user"]
+            }),
+
+            userExam: builder.query({
+                query: examId => {
+                    return {
+                        url: "/user-exam-fetch",
+                        method: "GET",
+                        params: { examId }
+                    }
+                },
+                providesTags: ["user"]
             }),
 
             examTime: builder.query({
@@ -33,7 +44,7 @@ export const userApi = createApi({
                         method: "GET",
                     }
                 },
-                invalidatesTags: ["user"]
+                providesTags: ["user"]
             }),
 
             examCheck: builder.mutation({
@@ -53,7 +64,8 @@ export const userApi = createApi({
 
 export const {
     useGetResultQuery,
-    useLazyGetResultQuery,
+    useGetExamNameQuery,
+    useLazyUserExamQuery,
     useExamTimeQuery,
     useExamCheckMutation
 } = userApi

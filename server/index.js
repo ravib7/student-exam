@@ -12,7 +12,7 @@ app.use(cookieParser())
 
 app.use("/api/auth", require("./routes/auth.route"))
 app.use("/api/admin", adminProtcted, require("./routes/adminexam.route"))
-app.use("/api/user", userProtected, require("./routes/adminexam.route"))
+app.use("/api/user", userProtected, require("./routes/userexam.route"))
 
 app.use("*", (req, res) => {
     res.status(404).json({ message: "Resource Not Found" })

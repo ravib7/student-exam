@@ -45,7 +45,6 @@ exports.UserLogin = asyncHandler(async (req, res) => {
 
     const { email, password, credential } = req.body
 
-
     const examData = await Time.findOne().sort({ createdAt: -1 });
 
     if (!examData || !examData.startTime || !examData.endTime) {

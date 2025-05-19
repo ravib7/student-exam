@@ -1,50 +1,99 @@
 import React, { useEffect, useState } from 'react'
-import { useGetExamTimeQuery, useLazyGetPaperQuery, useUserExamCheckMutation } from '../../redux/api/exam.api'
+import { useExamCheckMutation, useExamTimeQuery, useGetExamNameQuery, useLazyUserExamQuery } from '../../redux/api/user.api'
 import { useSelector } from 'react-redux'
 import { toast } from "react-toastify"
 import Loading from '../../admin/components/Loading'
 import { useNavigate } from 'react-router-dom'
 import { useRef } from 'react'
+import { parseISO, differenceInSeconds, intervalToDuration } from 'date-fns';
+
 
 const UserExam = () => {
 
     const navigate = useNavigate()
+    const [examId, setExamId] = useState(null)
 
     const currentUserId = useSelector(state => state.auth.user.id)
-    const [userExamData, { isSuccess, isLoading, isError, error }] = useUserExamCheckMutation()
+    const [userExamData, { isSuccess, isLoading, isError, error }] = useExamCheckMutation()
+    const { data: paperName } = useGetExamNameQuery()
 
     const [paperData, setPaperData] = useState([])
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
     const [answer, setAnswer] = useState([])
-    const [fetchPaper, { data }] = useLazyGetPaperQuery()
-    const { data: examTime } = useGetExamTimeQuery()
+    const [fetchPaper, { data }] = useLazyUserExamQuery()
+
     const currentQuestion = paperData[currentQuestionIndex]
 
     const answerRef = useRef([]);
     const hasSubmittedRef = useRef(false);
-    const [timeLeft, setTimeLeft] = useState('');
+
+    const { data: examTime } = useExamTimeQuery()
+    const [timeLeft, setTimeLeft] = useState('')
+
+
+    // useEffect(() => {
+    //     if (!examTime?.setTime[0] || paperData.length === 0) return;
+
+    //     const start = new Date(examTime.setTime[0].startTime).getTime();
+    //     const end = new Date(examTime.setTime[0].endTime).getTime();
+    //     const now = new Date().getTime();
+
+    //     if (now < start) {
+    //         setTimeLeft('Exam has not started yet!');
+    //         navigate("/");
+    //         return;
+    //     }
+
+    //     if (now > end) {
+    //         setTimeLeft('Exam time is over!');
+    //         navigate("/")
+    //         return;
+    //     }
+
+    //     // start timer
+    //     const interval = setInterval(() => {
+    //         const now = new Date().getTime();
+
+    //         if (now > end) {
+    //             if (!hasSubmittedRef.current) {
+    //                 handleSubmit();
+    //                 hasSubmittedRef.current = true;
+    //             }
+    //             clearInterval(interval);
+    //             setTimeLeft('Time is up!');
+    //         } else {
+    //             const diff = end - now;
+    //             const mins = Math.floor(diff / 1000 / 60);
+    //             const secs = Math.floor((diff / 1000) % 60);
+    //             setTimeLeft(`${mins} min ${secs < 10 ? '0' + secs : secs} sec`);
+    //         }
+    //     }, 1000);
+
+    //     return () => clearInterval(interval);
+    // }, [examTime, paperData]);
+
 
 
     useEffect(() => {
-        if (!examTime?.setTime?.[0] || paperData.length === 0) return;
+        if (!examTime?.setTime || examTime.setTime.length === 0 || paperData.length === 0) return;
 
-        const start = new Date(examTime.setTime[0].startTime).getTime();
-        const end = new Date(examTime.setTime[0].endTime).getTime();
         const now = new Date().getTime();
 
-        if (now < start) {
-            setTimeLeft('Exam has not started yet!');
-            navigate("/"); // 👈 Send back to home
+        // Find the currently running exam
+        const currentExam = examTime.setTime.find((exam) => {
+            const start = new Date(exam.startTime).getTime();
+            const end = new Date(exam.endTime).getTime();
+            return now >= start && now <= end;
+        });
+
+        if (!currentExam) {
+            setTimeLeft('No active exam found or exam not started!');
+            navigate("/");
             return;
         }
 
-        if (now > end) {
-            setTimeLeft('Exam time is over!');
-            navigate("/"); // 👈 Send back to home
-            return;
-        }
+        const end = new Date(currentExam.endTime).getTime();
 
-        // start timer
         const interval = setInterval(() => {
             const now = new Date().getTime();
 
@@ -67,13 +116,11 @@ const UserExam = () => {
     }, [examTime, paperData]);
 
 
-
-
-
-
     useEffect(() => {
-        fetchPaper()
-    }, [])
+        if (examId) {
+            fetchPaper(examId)
+        }
+    }, [examId])
 
     useEffect(() => {
         console.log(currentQuestionIndex);
@@ -134,8 +181,6 @@ const UserExam = () => {
         hasSubmittedRef.current = true;
     };
 
-
-
     useEffect(() => {
         if (isSuccess) {
             navigate("/usersuccess")
@@ -154,6 +199,19 @@ const UserExam = () => {
 
     return <>
         <div className="container">
+
+            <select class="form-select mb-5 w-25" onChange={e => setExamId(e.target.value)}>
+                <option value="" selected disabled>Select Exam Name</option>
+                {
+                    paperName && paperName.result.map(item =>
+                        <option
+                            value={item._id}
+                            id={item._id}>
+                            {item.examName}
+                        </option>)
+                }
+            </select>
+
             <div class="card">
                 <div className="card-header bg-primary text-light fs-4 text-center">
                     Exam Paper

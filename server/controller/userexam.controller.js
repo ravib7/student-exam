@@ -5,16 +5,16 @@ const User = require("../models/User")
 const Time = require("../models/Time")
 
 exports.getUserExamPaper = asyncHandler(async (req, res) => {
-    const result = await Exam.find().select("question firstoption secondoption thirdoption fourthoption marks")
+    const { examId } = req.query
+    const result = await Exam.find({ exam: examId }).select("question firstoption secondoption thirdoption fourthoption marks")
     res.json({ message: "Paper Fetch Successfully", result })
 })
 
-
 exports.getResult = asyncHandler(async (req, res) => {
-    const userResult = await UserAnswer.findById({ userId: req.user._id })
+    // const userResult = await UserAnswer.findById({ userId: req.user._id })
+    const userResult = await UserAnswer.findById()
     res.json({ message: "User Result Fetch Successfully", userResult })
 })
-
 
 exports.userExamChecking = asyncHandler(async (req, res) => {
 
@@ -66,5 +66,13 @@ exports.getExamTime = asyncHandler(async (req, res) => {
 
     const setTime = await Time.find()
 
-    res.json({ message: "User Result Fetch Successfully", setTime })
+    res.json({ message: "User Exam Time Fetch Successfully", setTime })
 })
+
+exports.getUserExamName = asyncHandler(async (req, res) => {
+
+    const result = await Time.find()
+
+    res.json({ message: "User Exam Name Fetch Successfully", result })
+})
+

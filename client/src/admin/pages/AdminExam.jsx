@@ -82,7 +82,7 @@ const AdminExam = () => {
 
     return <>
 
-        <select class="form-select mb-5" onChange={e => setExamId(e.target.value)}>
+        <select class="container form-select mb-5 w-25" onChange={e => setExamId(e.target.value)}>
             <option value="" selected disabled>Select Exam Name</option>
             {
                 data && data.result.map(item =>
