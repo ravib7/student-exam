@@ -105,10 +105,11 @@ const UserExam = () => {
                 clearInterval(interval);
                 setTimeLeft('Time is up!');
             } else {
-                const diff = end - now;
+                const diff = end - now
+                const h = Math.floor(diff / (1000 * 60 * 60) % 24);
                 const mins = Math.floor(diff / 1000 / 60);
                 const secs = Math.floor((diff / 1000) % 60);
-                setTimeLeft(`${mins} min ${secs < 10 ? '0' + secs : secs} sec`);
+                setTimeLeft(`${h} hours ${mins} min ${secs < 10 ? '0' + secs : secs} sec`);
             }
         }, 1000);
 

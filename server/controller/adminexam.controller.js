@@ -39,7 +39,7 @@ exports.getAllResults = asyncHandler(async (req, res) => {
 
     const userResult = await UserAnswer.find()
 
-    res.json({ message: "User Result Fetch Successfully", userResult })
+    res.json({ message: "User Result Fetch Successfully aaaaaaaaaaa", userResult })
 })
 
 exports.createExamTime = asyncHandler(async (req, res) => {
