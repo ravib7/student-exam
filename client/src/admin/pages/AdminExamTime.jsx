@@ -55,7 +55,7 @@ const AdminExamTime = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success("Exam Time set Successfully")
-            navigate("/admin/adminexam")
+            navigate("/admin/admin-exam")
         }
     }, [isSuccess])
 

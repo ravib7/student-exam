@@ -13,6 +13,8 @@ const AdminExam = () => {
 
     const location = useLocation()
     const updateData = location.state
+    const examData = updateData?.exam
+
 
     const [examId, setExamId] = useState(null)
 
@@ -41,7 +43,7 @@ const AdminExam = () => {
         }),
         onSubmit: (values, { resetForm }) => {
             if (updateData) {
-                examUpdate({ exam: examId, ...values, _id: updateData._id })
+                examUpdate({ exam: examData, ...values, _id: updateData._id })
             } else {
                 examCreate({ exam: examId, ...values })
             }
@@ -52,14 +54,14 @@ const AdminExam = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success("Exam Create Successfully")
-            navigate("/admin/exam-dashboard")
+            navigate(`/admin/exam-dashboard/${examId}`)
         }
     }, [isSuccess])
 
     useEffect(() => {
         if (updateIsSuccess) {
             toast.success("Exam Update Successfully")
-            navigate("/admin/exam-dashboard")
+            navigate(`/admin/exam-dashboard/${examData} `)
         }
     }, [updateIsSuccess])
 

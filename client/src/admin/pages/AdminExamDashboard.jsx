@@ -13,6 +13,7 @@ const AdminExamDashboard = () => {
     const navigate = useNavigate()
 
     const [paperData, setPaperData] = useState([])
+
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
 
     const currentQuestion = paperData[currentQuestionIndex]
@@ -90,7 +91,7 @@ const AdminExamDashboard = () => {
                             }
 
                             <div className='ms-auto mb-3 me-4'>
-                                <button onClick={() => navigate("/admin/adminexam", { state: currentQuestion })} type="button" class="btn btn-warning me-3 text-light"><i class="bi bi-pencil-fill"></i></button>
+                                <button onClick={() => navigate("/admin/admin-exam", { state: { ...currentQuestion, exam: examId } })} type="button" class="btn btn-warning me-3 text-light"><i class="bi bi-pencil-fill"></i></button>
                                 <button onClick={e => examDelete(currentQuestion._id)} type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
                             </div>
                         </div>
