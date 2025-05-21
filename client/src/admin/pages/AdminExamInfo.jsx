@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
-import { useGetExamTimeQuery } from '../../redux/api/admin.api'
+import React, { useEffect, useState } from 'react'
+import { useExamDeleteTimeMutation, useGetExamTimeQuery } from '../../redux/api/admin.api'
 import { format } from "date-fns"
 import { useNavigate } from 'react-router-dom'
+import Loading from '../components/Loading'
+import { toast } from "react-toastify"
 
 const AdminExamInfo = () => {
 
@@ -12,6 +14,24 @@ const AdminExamInfo = () => {
     const navigate = useNavigate()
 
     const { data } = useGetExamTimeQuery()
+
+    const [timeDelete, { isSuccess, isLoading, isError, error }] = useExamDeleteTimeMutation()
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.error("Exam Time Delete Successfully")
+        }
+    }, [isSuccess])
+
+    useEffect(() => {
+        if (isError) {
+            toast.error(error.data.message || "unable to delete")
+        }
+    }, [isError])
+
+    if (isLoading) {
+        return <Loading />
+    }
 
 
     return <>
@@ -43,7 +63,7 @@ const AdminExamInfo = () => {
 
 
             {
-                data && <table className='table table-bordered text-center table-hover'>
+                data && <table className='table table-bordered text-center table-hover table-light'>
                     <thead>
                         <tr>
                             <th>Sr No.</th>
@@ -63,8 +83,8 @@ const AdminExamInfo = () => {
                                 <td>{format(new Date(item.endTime), 'hh:mm a')}</td>
                                 <td>{format(item.examDate, "EEEE dd MMMM yyyy")}</td>
                                 <td>
-                                    <button type="button" class="btn btn-warning me-3 text-light"><i class="bi bi-pencil-fill"></i></button>
-                                    <button type="button" class="btn btn-danger me-3"><i class="bi bi-trash-fill"></i></button>
+                                    <button type="button" onClick={() => navigate("/admin/exam-time", { state: item })} class="btn btn-warning me-3 text-light"><i class="bi bi-pencil-fill"></i></button>
+                                    <button type="button" onClick={() => timeDelete(item._id)} class="btn btn-danger me-3"><i class="bi bi-trash-fill"></i></button>
                                     <button type="button" onClick={() => navigate(`/admin/exam-dashboard/${item._id}`)} class="btn btn-primary"><i class="bi bi-eye-fill"></i></button>
                                 </td>
                             </tr>

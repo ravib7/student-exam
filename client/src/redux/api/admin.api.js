@@ -92,6 +92,26 @@ export const adminApi = createApi({
                 providesTags: ["admin"]
             }),
 
+            examUpdateTime: builder.mutation({
+                query: timeData => {
+                    return {
+                        url: "/update-exam-time/" + timeData._id,
+                        method: "PATCH",
+                        body: timeData
+                    }
+                },
+                invalidatesTags: ["admin"]
+            }),
+
+            examDeleteTime: builder.mutation({
+                query: _id => {
+                    return {
+                        url: "/delete-exam-time/" + _id,
+                        method: "DELETE",
+                    }
+                },
+                invalidatesTags: ["admin"]
+            }),
         }
     }
 })
@@ -105,5 +125,8 @@ export const {
 
     useExamTimeSetMutation,
     useGetUsersResultsQuery,
-    useGetExamTimeQuery
+    useGetExamTimeQuery,
+    useExamUpdateTimeMutation,
+    useExamDeleteTimeMutation
+
 } = adminApi

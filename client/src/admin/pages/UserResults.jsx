@@ -13,8 +13,6 @@ const UserResults = () => {
         return <p className="text-center mt-5">Loading or no results found.</p>
     }
 
-
-
     // Step 1: Calculate obtained marks
     const obtainedMarks = item.answers
         .filter(ans => ans.isCorrect)

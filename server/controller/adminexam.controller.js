@@ -3,14 +3,14 @@ const Exam = require("../models/Exam")
 const UserAnswer = require("../models/UserAnswer")
 const Time = require("../models/Time")
 
-exports.getExamPaper = asyncHandler(async (req, res) => {
-    const { examId } = req.query
-    const result = await Exam.find({ exam: examId })
+exports.getExamName = asyncHandler(async (req, res) => {
+    const result = await Time.find()
     res.json({ message: "Paper Fetch Successfully", result })
 })
 
-exports.getExamName = asyncHandler(async (req, res) => {
-    const result = await Time.find()
+exports.getExamPaper = asyncHandler(async (req, res) => {
+    const { examId } = req.query
+    const result = await Exam.find({ exam: examId })
     res.json({ message: "Paper Fetch Successfully", result })
 })
 
@@ -61,6 +61,18 @@ exports.getTimeDetails = asyncHandler(async (req, res) => {
 
     res.json({ message: "User Exam Time Fetch Successfully", result })
 })
+
+exports.updateExamTime = asyncHandler(async (req, res) => {
+    await Time.findByIdAndUpdate(req.params.tid, req.body)
+    res.json({ message: "Exam Time Update Successfully" })
+})
+
+exports.deleteExamTime = asyncHandler(async (req, res) => {
+    const { tid } = req.params
+    await Time.findByIdAndDelete(tid)
+    res.json({ message: "Exam Time Delete Successfully" })
+})
+
 
 
 

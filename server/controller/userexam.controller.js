@@ -12,8 +12,6 @@ exports.getUserExamPaper = asyncHandler(async (req, res) => {
 
 exports.getResult = asyncHandler(async (req, res) => {
     const userResult = await UserAnswer.find({ userId: req.user })
-    console.log(userResult);
-
     res.json({ message: "User Result Fetch Successfully", userResult })
 })
 

@@ -13,6 +13,9 @@ router
     .post("/exam-time", exam.createExamTime)
     .get("/get-time-details", exam.getTimeDetails)
 
+    .patch("/update-exam-time/:tid", exam.updateExamTime)
+    .delete("/delete-exam-time/:tid", exam.deleteExamTime)
+
 
 
 module.exports = router

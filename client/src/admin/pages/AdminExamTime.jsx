@@ -4,22 +4,28 @@ import { useFormik } from 'formik'
 import * as yup from "yup"
 import { toast } from "react-toastify"
 import HandleClasses from '../components/HandleClasses'
-import { useExamTimeSetMutation } from '../../redux/api/admin.api'
-import { useNavigate } from 'react-router-dom'
-import { format, parse } from "date-fns"
+import { useExamTimeSetMutation, useExamUpdateTimeMutation } from '../../redux/api/admin.api'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { parse } from "date-fns"
 
 const AdminExamTime = () => {
+
+    const location = useLocation()
+    const updateTime = location.state
+
 
     const navigate = useNavigate()
 
     const [setTime, { isSuccess, isLoading, isError, error }] = useExamTimeSetMutation()
+    const [timeUpdate, { isSuccess: updateIsSuccess, isLoading: updateIsLoading, isError: updateIsError, error: updateError }] = useExamUpdateTimeMutation()
 
     const formik = useFormik({
+        enableReinitialize: true,
         initialValues: {
-            examName: "",
-            startTime: "",
-            endTime: "",
-            examDate: "",
+            examName: updateTime ? updateTime.examName : "",
+            startTime: updateTime ? updateTime.startTime : "",
+            endTime: updateTime ? updateTime.endTime : "",
+            examDate: updateTime ? updateTime.examDate : "",
         },
         validationSchema: yup.object({
             examName: yup.string().required(),
@@ -28,24 +34,46 @@ const AdminExamTime = () => {
             examDate: yup.string().required(),
         }),
         onSubmit: (values, { resetForm }) => {
-            const startDateTime = parse(
-                `${values.examDate} ${values.startTime}`,
-                'yyyy-MM-dd HH:mm',
-                new Date()
-            );
+            if (updateTime) {
+                const startDateTime = parse(
+                    `${values.examDate} ${values.startTime}`,
+                    'yyyy-MM-dd HH:mm',
+                    new Date()
+                );
 
-            const endDateTime = parse(
-                `${values.examDate} ${values.endTime}`,
-                'yyyy-MM-dd HH:mm',
-                new Date()
-            );
+                const endDateTime = parse(
+                    `${values.examDate} ${values.endTime}`,
+                    'yyyy-MM-dd HH:mm',
+                    new Date()
+                );
 
-            setTime({
-                examName: values.examName,
-                examDate: values.examDate,
-                startTime: startDateTime,
-                endTime: endDateTime,
-            });
+                timeUpdate({
+                    examName: values.examName,
+                    examDate: values.examDate,
+                    startTime: startDateTime,
+                    endTime: endDateTime,
+                    _id: updateTime._id
+                })
+            } else {
+                const startDateTime = parse(
+                    `${values.examDate} ${values.startTime}`,
+                    'yyyy-MM-dd HH:mm',
+                    new Date()
+                );
+
+                const endDateTime = parse(
+                    `${values.examDate} ${values.endTime}`,
+                    'yyyy-MM-dd HH:mm',
+                    new Date()
+                );
+
+                setTime({
+                    examName: values.examName,
+                    examDate: values.examDate,
+                    startTime: startDateTime,
+                    endTime: endDateTime,
+                });
+            }
 
             resetForm();
         }
@@ -60,12 +88,25 @@ const AdminExamTime = () => {
     }, [isSuccess])
 
     useEffect(() => {
+        if (updateIsSuccess) {
+            toast.success("Exam Time Update Successfully")
+            navigate("/admin")
+        }
+    }, [updateIsSuccess])
+
+    useEffect(() => {
         if (isError) {
             toast.error("unable to set exam time")
         }
     }, [isError])
 
-    if (isLoading) {
+    useEffect(() => {
+        if (updateIsError) {
+            toast.error(updateError.data.message || "unable to update")
+        }
+    }, [updateIsError])
+
+    if (isLoading || updateIsLoading) {
         return <Loading />
     }
 
@@ -125,9 +166,11 @@ const AdminExamTime = () => {
                                     <div class="valid-feedback">Looks good!</div>
                                     <div class="invalid-feedback">{formik.errors.examDate}</div>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100 mt-3">
-                                    Submit
-                                </button>
+                                {
+                                    updateTime
+                                        ? <button type="submit" class="btn btn-warning text-light w-100 mt-3">Update</button>
+                                        : <button type="submit" class="btn btn-primary w-100 mt-3">Submit</button>
+                                }
                             </div>
                         </form>
                     </div>
