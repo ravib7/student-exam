@@ -52,14 +52,14 @@ const AdminExam = () => {
     useEffect(() => {
         if (isSuccess) {
             toast.success("Exam Create Successfully")
-            // navigate("/admin")
+            navigate("/admin/exam-dashboard")
         }
     }, [isSuccess])
 
     useEffect(() => {
         if (updateIsSuccess) {
             toast.success("Exam Update Successfully")
-            navigate("/admin")
+            navigate("/admin/exam-dashboard")
         }
     }, [updateIsSuccess])
 

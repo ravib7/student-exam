@@ -12,7 +12,7 @@ const AdminNavbar = () => {
 
 
     return <>
-        <nav class="navbar navbar-expand-lg bg-primary navbar-dark mb-5 sticky-top z-50">
+        <nav class="navbar navbar-expand-lg bg-primary navbar-dark mb-4 sticky-top z-50">
             <div class="container">
                 <Link to="/admin" class="navbar-brand">Admin Panel</Link>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
@@ -20,10 +20,11 @@ const AdminNavbar = () => {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav ms-auto gap-2">
-                        <Link to="/admin" class="nav-link active">Home</Link>
-                        <Link to="userResults" class="nav-link active">Results</Link>
-                        <Link to="examtime" class="nav-link active">Time</Link>
-                        <Link to="adminexam" class="nav-link active">Exam</Link>
+                        <Link to="/admin" class="nav-link active">Exam Info</Link>
+                        {/* <Link to="exam-dashboard" class="nav-link active">Exam Dashboard</Link> */}
+                        <Link to="exam-time" class="nav-link active">Set Time</Link>
+                        <Link to="admin-exam" class="nav-link active">Add Questions</Link>
+                        <Link to="user-results" class="nav-link active">User Results</Link>
                     </div>
                 </div>
                 {

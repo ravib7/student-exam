@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom"
 import { useDeleteExamMutation, useGetPaperNameQuery, useLazyGetPaperQuery } from '../../redux/api/admin.api'
 import Loading from '../components/Loading'
 import { toast } from 'react-toastify'
+import { useParams } from "react-router-dom"
 
-const AdminHome = () => {
+
+const AdminExamDashboard = () => {
+
+    const { examId } = useParams()
 
     const navigate = useNavigate()
-    const [examId, setExamId] = useState(null)
-
-    const { data: examNameData } = useGetPaperNameQuery()
 
     const [paperData, setPaperData] = useState([])
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -66,22 +67,10 @@ const AdminHome = () => {
 
     return <>
         <div className="container">
-
-            <select class="form-select mb-5" onChange={e => setExamId(e.target.value)}>
-                <option value="" selected disabled>Select Exam Name</option>
-                {
-                    examNameData && examNameData.result.map(item =>
-                        <option
-                            value={item._id}
-                            id={item._id}>
-                            {item.examName}
-                        </option>)
-                }
-            </select>
-
-
             <div class="card">
-                <div class="card-header bg-primary text-light fs-4 text-center">Exam Paper</div>
+                <div class="card-header bg-primary text-light fs-4 text-center">
+                    Exam Paper
+                </div>
                 <div class="card-body">
                     <div className="container">
                         <div class="card">
@@ -118,4 +107,4 @@ const AdminHome = () => {
     </>
 }
 
-export default AdminHome
+export default AdminExamDashboard

@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler")
 const Exam = require("../models/Exam")
 const UserAnswer = require("../models/UserAnswer")
-const User = require("../models/User")
 const Time = require("../models/Time")
 
 exports.getExamPaper = asyncHandler(async (req, res) => {
@@ -54,6 +53,13 @@ exports.createExamTime = asyncHandler(async (req, res) => {
     const examTime = await Time.create({ startTime, endTime, examDate, examName })
 
     res.json({ message: "Exam Time Set Successfully", examTime })
+})
+
+exports.getTimeDetails = asyncHandler(async (req, res) => {
+
+    const result = await Time.find()
+
+    res.json({ message: "User Exam Time Fetch Successfully", result })
 })
 
 

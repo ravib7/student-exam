@@ -11,6 +11,7 @@ router
 
     .get("/get-user-result", exam.getAllResults)
     .post("/exam-time", exam.createExamTime)
+    .get("/get-time-details", exam.getTimeDetails)
 
 
 

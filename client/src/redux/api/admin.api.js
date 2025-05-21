@@ -85,7 +85,7 @@ export const adminApi = createApi({
             getExamTime: builder.query({
                 query: () => {
                     return {
-                        url: "/get-exam-time",
+                        url: "/get-time-details",
                         method: "GET",
                     }
                 },

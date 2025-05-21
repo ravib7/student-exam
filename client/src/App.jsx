@@ -3,20 +3,25 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { ToastContainer } from "react-toastify"
 import "react-toastify/ReactToastify.css"
-const UserProtected = lazy(() => import("./users/components/UserProtected"))
-const AdminProtected = lazy(() => import("./admin/components/AdminProtected"))
-const Success = lazy(() => import("./users/pages/Sucess"))
-const UserResults = lazy(() => import("./admin/pages/UserResults"))
-const Result = lazy(() => import("./users/pages/Result"))
-const AdminExamTime = lazy(() => import("./admin/pages/AdminExamTime"))
-const AdminHome = lazy(() => import("./admin/pages/AdminHome"))
+
 const AdminLayout = lazy(() => import("./admin/components/AdminLayout"))
 const AdminLogin = lazy(() => import("./admin/pages/AdminLogin"))
+const AdminProtected = lazy(() => import("./admin/components/AdminProtected"))
+const AdminExamInfo = lazy(() => import("./admin/pages/AdminExamInfo"))
+const AdminExamDashboard = lazy(() => import("./admin/pages/AdminExamDashboard"))
+const AdminExamTime = lazy(() => import("./admin/pages/AdminExamTime"))
 const AdminExam = lazy(() => import("./admin/pages/AdminExam"))
-const UserExam = lazy(() => import("./users/pages/UserExam"))
-const Login = lazy(() => import("./users/pages/UserLogin"))
-const Register = lazy(() => import("./users/pages/UserRegister"))
+const UserResults = lazy(() => import("./admin/pages/UserResults"))
+
+
 const Layout = lazy(() => import("./users/components/Layout"))
+const Register = lazy(() => import("./users/pages/UserRegister"))
+const Login = lazy(() => import("./users/pages/UserLogin"))
+const UserProtected = lazy(() => import("./users/components/UserProtected"))
+const UserExam = lazy(() => import("./users/pages/UserExam"))
+const Success = lazy(() => import("./users/pages/Sucess"))
+const Result = lazy(() => import("./users/pages/Result"))
+
 
 const ErrorFallback = ({ error, resetErrorBoundary }) => {
   return <>
@@ -39,10 +44,11 @@ const App = () => {
   ]
 
   const ADMIN_ROUETS = [
-    { path: "", element: <AdminHome /> },
-    { path: "userResults", element: <UserResults /> },
-    { path: "examtime", element: <AdminExamTime /> },
-    { path: "adminexam", element: <AdminExam /> },
+    { path: "", element: <AdminExamInfo /> },
+    { path: "exam-dashboard/:examId", element: <AdminExamDashboard /> },
+    { path: "exam-time", element: <AdminExamTime /> },
+    { path: "admin-exam", element: <AdminExam /> },
+    { path: "user-results", element: <UserResults /> },
   ]
 
   return <>
