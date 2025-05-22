@@ -6,7 +6,8 @@ import { toast } from "react-toastify"
 import HandleClasses from '../components/HandleClasses'
 import { useExamTimeSetMutation, useExamUpdateTimeMutation } from '../../redux/api/admin.api'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { parse } from "date-fns"
+import { parse, format } from "date-fns"
+
 
 const AdminExamTime = () => {
 
@@ -23,9 +24,9 @@ const AdminExamTime = () => {
         enableReinitialize: true,
         initialValues: {
             examName: updateTime ? updateTime.examName : "",
-            startTime: updateTime ? updateTime.startTime : "",
-            endTime: updateTime ? updateTime.endTime : "",
-            examDate: updateTime ? updateTime.examDate : "",
+            startTime: updateTime ? format(new Date(updateTime.startTime), "HH:mm") : "",
+            endTime: updateTime ? format(new Date(updateTime.endTime), "HH:mm") : "",
+            examDate: updateTime ? format(new Date(updateTime.examDate), "yyyy-MM-dd") : "",
         },
         validationSchema: yup.object({
             examName: yup.string().required(),
