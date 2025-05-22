@@ -9,7 +9,7 @@ router
     .patch("/exam-update/:eid", exam.updateExamPaper)
     .delete("/exam-delete/:eid", exam.deleteExamPaper)
 
-    .get("/get-user-result", exam.getAllResults)
+    .get("/get-user-result/:examId", exam.getAllResults)
     .post("/exam-time", exam.createExamTime)
     .get("/get-time-details", exam.getTimeDetails)
 

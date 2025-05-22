@@ -1,25 +1,32 @@
 import React, { useState } from 'react'
-import { useGetUsersResultsQuery } from '../../redux/api/admin.api'
+import { useGetPaperNameQuery, useGetUsersResultsQuery } from '../../redux/api/admin.api'
 
 const UserResults = () => {
 
     const [currentIndex, setCurrentIndex] = useState(0)
 
-    const { data } = useGetUsersResultsQuery()
+    const [examId, setExamId] = useState(null)
+
+    console.log(examId);
+
+
+    const { data } = useGetUsersResultsQuery(examId)
+
+    const { data: examData } = useGetPaperNameQuery()
 
     const item = data?.userResult[currentIndex]
 
-    if (!item) {
-        return <p className="text-center mt-5">Loading or no results found.</p>
-    }
+    // if (!item) {
+    //     return <p className="text-center mt-5">Loading or no results found.</p>
+    // }
 
     // Step 1: Calculate obtained marks
-    const obtainedMarks = item.answers
+    const obtainedMarks = item?.answers
         .filter(ans => ans.isCorrect)
         .reduce((sum, ans) => sum + (ans.marks || 0), 0)
 
     // Step 2: Calculate total marks
-    const totalMarks = item.answers
+    const totalMarks = item?.answers
         .reduce((sum, ans) => sum + (ans.marks || 0), 0)
 
     // Step 3: Calculate percentage
@@ -35,6 +42,17 @@ const UserResults = () => {
 
 
     return <>
+        <select class="container form-select mb-5 w-25" onChange={e => setExamId(e.target.value)}>
+            <option value="" selected disabled>Select Exam Name</option>
+            {
+                examData && examData.result.map(item =>
+                    <option
+                        value={item._id}
+                        id={item._id}>
+                        {item.examName}
+                    </option>)
+            }
+        </select>
         {
 
             <div className='container-fluid'>
@@ -45,23 +63,23 @@ const UserResults = () => {
                     <div className="card-body">
                         <div className="row gap-md-4 pe-5 ms-5 mt-3">
                             <div className='col-sm-12 col-md-2 mb-sm-5'>
-                                <img className='rounded align-items-end shadow-sm' src={item.userImage} alt={item.userImage} height={100} width={100} />
+                                <img className='rounded align-items-end shadow-sm' src={item?.userImage} alt={item?.userImage} height={100} width={100} />
                             </div>
                             <div className='col-sm-12 col-md-4'>
                                 <p className='fs-6'>
                                     <strong className='text-decoration-underline' style={{ textUnderlineOffset: 5 }}>
                                         Student Name
-                                    </strong> :  {item.userName}
+                                    </strong> :  {item?.userName}
                                 </p>
                                 <p className='fs-6'>
                                     <strong className='text-decoration-underline' style={{ textUnderlineOffset: 5 }}>
                                         Student Email
-                                    </strong> :  {item.userEmail}
+                                    </strong> :  {item?.userEmail}
                                 </p>
                                 <p className='fs-6'>
                                     <strong className='text-decoration-underline' style={{ textUnderlineOffset: 5 }}>
                                         Mobile Number
-                                    </strong> :  {item.userMobile}
+                                    </strong> :  {item?.userMobile}
                                 </p>
                             </div>
                             <div className='col-sm-12 col-md-3'>
@@ -102,7 +120,7 @@ const UserResults = () => {
                             </thead>
                             <tbody>
                                 {
-                                    item.answers.map((ans, index) => (
+                                    item?.answers.map((ans, index) => (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
                                             <td>{ans.question}</td>

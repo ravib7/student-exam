@@ -175,7 +175,8 @@ const UserExam = () => {
 
         const paperDataUser = {
             userId: currentUserId,
-            answers: finalAnswers
+            answers: finalAnswers,
+            examId
         };
 
         await userExamData(paperDataUser);

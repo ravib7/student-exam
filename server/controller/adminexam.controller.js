@@ -36,9 +36,9 @@ exports.deleteExamPaper = asyncHandler(async (req, res) => {
 
 exports.getAllResults = asyncHandler(async (req, res) => {
 
-    const userResult = await UserAnswer.find()
-
-    res.json({ message: "User Result Fetch Successfully aaaaaaaaaaa", userResult })
+    const { examId } = req.params
+    const userResult = await UserAnswer.find({ exam: examId })
+    res.json({ message: "User Result Fetch Successfully", userResult })
 })
 
 exports.createExamTime = asyncHandler(async (req, res) => {

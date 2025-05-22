@@ -17,8 +17,7 @@ exports.getResult = asyncHandler(async (req, res) => {
 
 exports.userExamChecking = asyncHandler(async (req, res) => {
 
-    const { answers, userId } = req.body
-
+    const { answers, userId, examId } = req.body
     const user = await User.findById(userId)
 
     if (!user) {
@@ -56,6 +55,7 @@ exports.userExamChecking = asyncHandler(async (req, res) => {
         userMobile: userMobile,
         userImage: userImage,
         answers: result,
+        exam: examId
     })
 
     res.json({ message: "Exam results", result, savedAnswer })

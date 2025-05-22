@@ -62,10 +62,11 @@ export const adminApi = createApi({
             }),
 
             getUsersResults: builder.query({
-                query: () => {
+                query: examId => {
                     return {
-                        url: "/get-user-result",
+                        url: `get-user-result/${examId}`,
                         method: "GET",
+                        // params: { examId }
                     }
                 },
                 providesTags: ["admin"]
